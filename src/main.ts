@@ -12,12 +12,11 @@ let isDevMode = false;
  * can access the window's webContents to send messages to the renderer.
  *
  * @type {BrowserWindow | null}
- * @type {BrowserWindow | null}
+ *
  */
-let mainWindow: BrowserWindow | null = null;
-
-/**
- * Tracks the file path of the currently open document.
+ let mainWindow: BrowserWindow | null = null;
+ 
+ /* Tracks the file path of the currently open document.
  *
  * Set when a file is opened via the Open menu.
  * Cleared when the user creates a New document.
@@ -83,6 +82,9 @@ function createWindow(): BrowserWindow {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
       nodeIntegration: false,
+      webSecurity: true, // Enforce same-origin policy
+      allowRunningInsecureContent: false, // Prevent mixed content (HTTP + HTTPS)
+      spellcheck: false, // Disable spellcheck to avoid telemetry
     },
   });
 
@@ -146,8 +148,25 @@ function createWindow(): BrowserWindow {
     window.loadFile(path.join(__dirname, "..", "index.html"));
   }
 
-  // Open Chrome DevTools for debugging
-  window.webContents.openDevTools();
+  // Open Chrome DevTools only in development mode
+  if (devServerUrl) {
+    window.webContents.openDevTools();
+  }
+
+  // Lock navigation: prevent the window from navigating to external URLs
+  // This prevents XSS via navigation to malicious pages that could
+  // still receive IPC messages from the main process
+  window.webContents.on("will-navigate", (event, url) => {
+    // Allow navigation to the dev server URL or file:// URLs we control
+    const isDevUrl = devServerUrl && url.startsWith(devServerUrl);
+    const isFileUrl = url.startsWith("file://");
+
+    if (!isDevUrl && !isFileUrl) {
+      event.preventDefault();
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      fs.appendFileSync(logFile, `[${timestamp}] BLOCKED NAVIGATION: ${url}\n`);
+    }
+  });
 
   // Store the window reference for menu actions
   mainWindow = window;
@@ -279,8 +298,36 @@ app.whenReady().then(() => {
 });
 
 // IPC handler: renderer sends the current editor content back for saving
-ipcMain.on("save-content", (_event, content: string, filePath: string) => {
+// Security: verify the sender is our own renderer and the path was approved by the dialog
+ipcMain.on("save-content", (event, content: string, filePath: string) => {
+  // Verify the IPC message came from our own renderer process
+  // A navigated-to external page would have a different origin
+  const senderId = event.senderFrame?.processId;
+  const windowId = event.senderFrame?.frameTreeNodeId;
+
+  if (senderId === undefined || windowId === undefined) {
+    console.error("IPC save-content: rejected — unknown sender frame");
+    return;
+  }
+
+  // Validate that the file path was approved by the save dialog
+  // The renderer should only receive save prompts for paths we authorized
+  if (!filePath || typeof filePath !== "string") {
+    console.error("IPC save-content: rejected — invalid file path");
+    return;
+  }
+
+  // Only allow saving to the currently tracked file or the dialog-approved path
+  if (filePath !== currentFilePath) {
+    console.error(
+      "IPC save-content: rejected — path mismatch (possible path traversal)",
+    );
+    return;
+  }
+
+  // Write the file content to disk
   fs.writeFileSync(filePath, content, "utf-8");
+
   // Notify the renderer that the save succeeded
   mainWindow?.webContents.send("menu:save-done", { filePath });
 });

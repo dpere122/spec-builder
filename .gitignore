@@ -22,3 +22,6 @@ coverage/
 
 # Build artifacts
 *.log
+
+# Test files
+test.md

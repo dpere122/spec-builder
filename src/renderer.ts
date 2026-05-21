@@ -1,4 +1,5 @@
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 import "./styles.css";
 
 /** Reference to the Markdown editor textarea element in the DOM. */
@@ -11,15 +12,24 @@ const preview = document.getElementById("preview") as HTMLDivElement;
  * Renders the current Markdown text from the editor into HTML and updates the preview pane.
  *
  * Reads the value of the editor textarea, parses it with the `marked` library,
- * and sets the resulting HTML as the innerHTML of the preview element.
+ * sanitizes the resulting HTML with DOMPurify to prevent XSS attacks,
+ * and sets the sanitized HTML as the innerHTML of the preview element.
  *
  * @returns void
  */
 async function updatePreview(): Promise<void> {
-  // Parse the Markdown content and inject the resulting HTML into the preview div
+  // Parse the Markdown content
   // marked v15 parse() can return string | Promise<string>, so we await it
-  const html: string = await marked.parse(editor.value || "");
-  preview.innerHTML = html;
+  const rawHtml: string = await marked.parse(editor.value || "");
+
+  // Sanitize the HTML to remove any malicious scripts or event handlers
+  // This prevents XSS attacks from crafted Markdown content
+  const sanitizedHtml: string = DOMPurify.sanitize(rawHtml, {
+    WHOLE_DOCUMENT: false,
+    ADD_ATTR: ["target"], // Allow target="_blank" on links
+  });
+
+  preview.innerHTML = sanitizedHtml;
 }
 
 // Listen for input events on the editor to trigger live preview updates

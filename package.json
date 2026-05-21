@@ -19,6 +19,8 @@
     "vite-plugin-electron": "^0.3.0"
   },
   "dependencies": {
+    "@types/dompurify": "^3.0.5",
+    "dompurify": "^3.4.5",
     "marked": "^15.0.0"
   }
 }
