@@ -22,6 +22,35 @@
         <div id="preview" class="preview"></div>
       </div>
     </div>
+    <!-- Theme picker modal dialog -->
+    <div id="theme-modal" class="modal-overlay" style="display: none">
+      <div class="modal-content">
+        <h2>Choose a Theme</h2>
+        <div class="theme-grid">
+          <button class="theme-btn" data-theme="light" title="Light theme">
+            <div class="theme-swatch light-swatch"></div>
+            <span>Light</span>
+          </button>
+          <button class="theme-btn" data-theme="dark" title="Dark theme">
+            <div class="theme-swatch dark-swatch"></div>
+            <span>Dark</span>
+          </button>
+          <button class="theme-btn" data-theme="sepia" title="Sepia theme">
+            <div class="theme-swatch sepia-swatch"></div>
+            <span>Sepia</span>
+          </button>
+          <button
+            class="theme-btn"
+            data-theme="high-contrast"
+            title="High Contrast theme"
+          >
+            <div class="theme-swatch high-contrast-swatch"></div>
+            <span>High Contrast</span>
+          </button>
+        </div>
+        <button id="theme-close-btn" class="modal-close-btn">Close</button>
+      </div>
+    </div>
     <script type="module" src="/src/renderer.ts"></script>
   </body>
 </html>

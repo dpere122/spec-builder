@@ -14,9 +14,9 @@ let isDevMode = false;
  * @type {BrowserWindow | null}
  *
  */
- let mainWindow: BrowserWindow | null = null;
- 
- /* Tracks the file path of the currently open document.
+let mainWindow: BrowserWindow | null = null;
+
+/* Tracks the file path of the currently open document.
  *
  * Set when a file is opened via the Open menu.
  * Cleared when the user creates a New document.
@@ -247,6 +247,13 @@ function buildMenuTemplate() {
               // Tell the renderer to request its current content, then save
               mainWindow?.webContents.send("menu:save-prompt", result.filePath);
             }
+          },
+        },
+        {
+          label: "Themes...",
+          click: () => {
+            // Tell the renderer to open the theme modal dialog
+            mainWindow?.webContents.send("menu:themes");
           },
         },
         { type: "separator" },

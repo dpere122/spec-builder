@@ -54,4 +54,22 @@ contextBridge.exposeInMainWorld("electronAPI", {
   saveContent: (content: string, filePath: string) => {
     ipcRenderer.send("save-content", content, filePath);
   },
+
+  /**
+   * Listen for the "Themes" menu action — opens the theme picker modal.
+   *
+   * @param callback - Function called when the Themes menu item is clicked
+   */
+  onThemes: (callback: () => void) => {
+    ipcRenderer.on("menu:themes", () => callback());
+  },
+
+  /**
+   * Send the selected theme name to the main process so it can be persisted (future).
+   *
+   * @param theme - The name of the selected theme
+   */
+  selectTheme: (theme: string) => {
+    ipcRenderer.send("select-theme", theme);
+  },
 });

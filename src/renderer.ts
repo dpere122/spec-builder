@@ -8,6 +8,20 @@ const editor = document.getElementById("editor") as HTMLTextAreaElement;
 /** Reference to the HTML preview div where rendered Markdown is displayed. */
 const preview = document.getElementById("preview") as HTMLDivElement;
 
+/** Available theme identifiers for the theme picker. */
+const THEMES: string[] = ["light", "dark", "sepia", "high-contrast"];
+
+/** The currently active theme name. Defaults to "light". */
+let currentTheme: string = "light";
+
+/** Reference to the theme modal overlay element. */
+const themeModal = document.getElementById("theme-modal") as HTMLDivElement;
+
+/** Reference to the modal close button. */
+const themeCloseBtn = document.getElementById(
+  "theme-close-btn",
+) as HTMLButtonElement;
+
 /**
  * Renders the current Markdown text from the editor into HTML and updates the preview pane.
  *
@@ -75,3 +89,86 @@ window.electronAPI.onSavePrompt((filePath: string) => {
 window.electronAPI.onSaveDone((data: { filePath: string }) => {
   console.log(`Saved file: ${data.filePath}`);
 });
+
+// --- Theme Modal Logic ---
+
+/**
+ * Apply a theme by setting the corresponding CSS class on the body element.
+ *
+ * Removes all existing theme classes first, then adds the new one.
+ * Updates the active state of theme buttons in the modal.
+ *
+ * @param theme - The theme identifier to apply (e.g., "dark", "sepia")
+ */
+function applyTheme(theme: string): void {
+  // Remove all existing theme classes from the body
+  THEMES.forEach((t) => {
+    document.body.classList.remove(`theme-${t}`);
+  });
+
+  // Add the new theme class
+  document.body.classList.add(`theme-${theme}`);
+  currentTheme = theme;
+
+  // Update active state on theme buttons
+  const buttons = document.querySelectorAll(".theme-btn");
+  buttons.forEach((btn) => {
+    const button = btn as HTMLButtonElement;
+    if (button.dataset.theme === theme) {
+      button.classList.add("active");
+    } else {
+      button.classList.remove("active");
+    }
+  });
+
+  // Send theme selection to main process for potential persistence
+  window.electronAPI.selectTheme(theme);
+}
+
+/**
+ * Open the theme picker modal dialog.
+ *
+ * Shows the modal and sets focus to the close button for accessibility.
+ */
+function openThemeModal(): void {
+  themeModal.style.display = "flex";
+  themeCloseBtn.focus();
+}
+
+/**
+ * Close the theme picker modal dialog.
+ *
+ * Hides the modal overlay from view.
+ */
+function closeThemeModal(): void {
+  themeModal.style.display = "none";
+}
+
+// Handle the "Themes" menu action: open the modal
+window.electronAPI.onThemes(() => {
+  openThemeModal();
+});
+
+// Wire up theme selection buttons inside the modal
+const themeButtons = document.querySelectorAll(".theme-btn");
+themeButtons.forEach((btn) => {
+  const button = btn as HTMLButtonElement;
+  button.addEventListener("click", () => {
+    const theme = button.dataset.theme || "light";
+    applyTheme(theme);
+  });
+});
+
+// Close button handler
+themeCloseBtn.addEventListener("click", closeThemeModal);
+
+// Close modal when clicking outside the content area
+themeModal.addEventListener("click", (e) => {
+  const target = e.target as HTMLElement;
+  if (target.classList.contains("modal-overlay")) {
+    closeThemeModal();
+  }
+});
+
+// Apply the default theme on initial load
+applyTheme("light");

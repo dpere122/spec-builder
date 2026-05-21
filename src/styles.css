@@ -111,3 +111,362 @@ body {
 .preview th {
   background: #f5f5f5;
 }
+
+/* ===================================
+   Theme Picker Modal Dialog Styles
+   =================================== */
+
+/* Modal overlay: semi-transparent backdrop */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal content box */
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Theme button grid */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Individual theme button */
+.theme-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  font-size: 13px;
+  color: #333;
+}
+
+.theme-btn:hover {
+  border-color: #888;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.theme-btn.active {
+  border-color: #0078d4;
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.3);
+}
+
+/* Color swatches for each theme */
+.theme-swatch {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.light-swatch {
+  background: #fafafa;
+}
+
+.dark-swatch {
+  background: #1e1e1e;
+}
+
+.sepia-swatch {
+  background: #f4ecd8;
+}
+
+.high-contrast-swatch {
+  background: #000;
+}
+
+/* Modal close button */
+.modal-close-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f5f5f5;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: #e8e8e8;
+}
+
+/* ===================================
+   Theme: Dark
+   =================================== */
+body.theme-dark {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+body.theme-dark .editor-pane {
+  border-right-color: #444;
+}
+
+body.theme-dark .editor {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+body.theme-dark .preview {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+body.theme-dark .preview code {
+  background: #2d2d2d;
+  color: #d4d4d4;
+}
+
+body.theme-dark .preview pre {
+  background: #2d2d2d;
+}
+
+body.theme-dark .preview blockquote {
+  border-left-color: #555;
+  color: #999;
+}
+
+body.theme-dark .preview table {
+  border-color: #444;
+}
+
+body.theme-dark .preview th,
+body.theme-dark .preview td {
+  border-color: #444;
+}
+
+body.theme-dark .preview th {
+  background: #2d2d2d;
+}
+
+body.theme-dark .modal-content {
+  background: #2d2d2d;
+  color: #d4d4d4;
+}
+
+body.theme-dark .modal-content h2 {
+  color: #d4d4d4;
+}
+
+body.theme-dark .theme-btn {
+  background: #3a3a3a;
+  border-color: #555;
+  color: #d4d4d4;
+}
+
+body.theme-dark .theme-btn:hover {
+  border-color: #888;
+}
+
+body.theme-dark .theme-btn.active {
+  border-color: #0078d4;
+}
+
+body.theme-dark .modal-close-btn {
+  background: #3a3a3a;
+  border-color: #555;
+  color: #d4d4d4;
+}
+
+body.theme-dark .modal-close-btn:hover {
+  background: #4a4a4a;
+}
+
+/* ===================================
+   Theme: Sepia
+   =================================== */
+body.theme-sepia {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .editor-pane {
+  border-right-color: #d4c9a8;
+}
+
+body.theme-sepia .editor {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .preview {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .preview code {
+  background: #e8dcc8;
+  color: #5b4636;
+}
+
+body.theme-sepia .preview pre {
+  background: #e8dcc8;
+}
+
+body.theme-sepia .preview blockquote {
+  border-left-color: #c4b896;
+  color: #7a6652;
+}
+
+body.theme-sepia .preview table {
+  border-color: #d4c9a8;
+}
+
+body.theme-sepia .preview th,
+body.theme-sepia .preview td {
+  border-color: #d4c9a8;
+}
+
+body.theme-sepia .preview th {
+  background: #e8dcc8;
+}
+
+body.theme-sepia .modal-content {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .modal-content h2 {
+  color: #5b4636;
+}
+
+body.theme-sepia .theme-btn {
+  background: #e8dcc8;
+  border-color: #c4b896;
+  color: #5b4636;
+}
+
+body.theme-sepia .theme-btn:hover {
+  border-color: #a89878;
+}
+
+body.theme-sepia .theme-btn.active {
+  border-color: #0078d4;
+}
+
+body.theme-sepia .modal-close-btn {
+  background: #e8dcc8;
+  border-color: #c4b896;
+  color: #5b4636;
+}
+
+body.theme-sepia .modal-close-btn:hover {
+  background: #dccfb0;
+}
+
+/* ===================================
+   Theme: High Contrast
+   =================================== */
+body.theme-high-contrast {
+  background: #000;
+  color: #fff;
+}
+
+body.theme-high-contrast .editor-pane {
+  border-right-color: #fff;
+}
+
+body.theme-high-contrast .editor {
+  background: #000;
+  color: #fff;
+}
+
+body.theme-high-contrast .preview {
+  background: #000;
+  color: #fff;
+}
+
+body.theme-high-contrast .preview code {
+  background: #333;
+  color: #fff;
+}
+
+body.theme-high-contrast .preview pre {
+  background: #333;
+}
+
+body.theme-high-contrast .preview blockquote {
+  border-left-color: #fff;
+  color: #ff0;
+}
+
+body.theme-high-contrast .preview table {
+  border-color: #fff;
+}
+
+body.theme-high-contrast .preview th,
+body.theme-high-contrast .preview td {
+  border-color: #fff;
+}
+
+body.theme-high-contrast .preview th {
+  background: #333;
+}
+
+body.theme-high-contrast .modal-content {
+  background: #111;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+body.theme-high-contrast .modal-content h2 {
+  color: #fff;
+}
+
+body.theme-high-contrast .theme-btn {
+  background: #222;
+  border-color: #fff;
+  color: #fff;
+}
+
+body.theme-high-contrast .theme-btn:hover {
+  background: #333;
+}
+
+body.theme-high-contrast .theme-btn.active {
+  border-color: #ff0;
+}
+
+body.theme-high-contrast .modal-close-btn {
+  background: #222;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+body.theme-high-contrast .modal-close-btn:hover {
+  background: #333;
+}

@@ -14,6 +14,8 @@ declare global {
       onSavePrompt: (callback: (filePath: string) => void) => void;
       onSaveDone: (callback: (data: { filePath: string }) => void) => void;
       saveContent: (content: string, filePath: string) => void;
+      onThemes: (callback: () => void) => void;
+      selectTheme: (theme: string) => void;
     };
   }
 }
