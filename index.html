@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- CSP: relaxed for Vite dev server HMR; tighten in production build -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    />
+    <title>Spec Builder</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="pane editor-pane">
+        <textarea
+          id="editor"
+          class="editor"
+          placeholder="Write your Markdown spec here..."
+        ></textarea>
+      </div>
+      <div class="pane preview-pane">
+        <div id="preview" class="preview"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/renderer.ts"></script>
+  </body>
+</html>

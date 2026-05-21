@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Electron build output
+dist-electron/
+
+# Logs
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Coverage
+coverage/
+
+# Build artifacts
+*.log
