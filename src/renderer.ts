@@ -170,5 +170,41 @@ themeModal.addEventListener("click", (e) => {
   }
 });
 
+// --- Preview Pane Toggle ---
+
+/** Reference to the preview pane container. */
+const previewPane = document.querySelector(".preview-pane") as HTMLDivElement;
+
+/** Reference to the toggle button for the preview pane. */
+const previewToggle = document.getElementById(
+  "preview-toggle",
+) as HTMLButtonElement;
+
+/** Whether the preview pane is currently collapsed. */
+let previewCollapsed: boolean = true;
+
+/**
+ * Toggle the visibility of the preview pane.
+ *
+ * When collapsed, the preview pane disappears and the editor fills the full width.
+ * When expanded, the split-pane layout is restored.
+ */
+function togglePreviewPane(): void {
+  previewCollapsed = !previewCollapsed;
+
+  if (previewCollapsed) {
+    previewPane.classList.add("collapsed");
+    previewToggle.classList.add("collapsed");
+    previewToggle.textContent = "▶";
+  } else {
+    previewPane.classList.remove("collapsed");
+    previewToggle.classList.remove("collapsed");
+    previewToggle.textContent = "◀";
+  }
+}
+
+// Wire up the preview toggle button
+previewToggle.addEventListener("click", togglePreviewPane);
+
 // Apply the default theme on initial load
 applyTheme("light");

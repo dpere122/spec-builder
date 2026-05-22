@@ -42,6 +42,24 @@ spec-builder/
 - **Open**: Main process shows file dialog → reads file → sends `menu:open` with `{ filePath, content }` → renderer loads content.
 - **Save**: If a file is currently open, saves directly to that path; otherwise shows a save dialog → sends `menu:save-prompt` with `filePath` → renderer sends `save-content` with editor text → main process writes file → sends `menu:save-done`.
 
+## Themes
+
+Accessed via **Help → Themes...** in the application menu, the theme picker opens a modal dialog with four built-in themes:
+
+| Theme | Description |
+|---|---|
+| **Light** | Clean white background with dark text |
+| **Dark** | Dark background with light text for low-light environments |
+| **Sepia** | Warm, paper-like tones to reduce eye strain |
+| **High Contrast** | Maximum contrast (black background, bright text) for accessibility |
+
+Each theme applies CSS custom properties to the editor, preview pane, and UI chrome. Selections are persisted via `localStorage` so the chosen theme is restored on startup.
+
+### Theme IPC Flow
+
+- **Open Picker**: Main process sends `menu:themes` → renderer shows the theme modal.
+- **Select Theme**: Renderer calls `selectTheme(themeName)` → sends `menu:select-theme` with the theme name → main process acknowledges → renderer applies CSS variables and persists the choice.
+
 ## Tech Stack
 
 | Component | Library |

@@ -18,7 +18,15 @@
           placeholder="Write your Markdown spec here..."
         ></textarea>
       </div>
-      <div class="pane preview-pane">
+      <button
+        id="preview-toggle"
+        class="preview-toggle collapsed"
+        title="Toggle preview pane"
+        aria-label="Toggle preview pane"
+      >
+        ▶
+      </button>
+      <div class="pane preview-pane collapsed">
         <div id="preview" class="preview"></div>
       </div>
     </div>
