@@ -148,11 +148,6 @@ function createWindow(): BrowserWindow {
     window.loadFile(path.join(__dirname, "..", "index.html"));
   }
 
-  // Open Chrome DevTools only in development mode
-  if (devServerUrl) {
-    window.webContents.openDevTools();
-  }
-
   // Lock navigation: prevent the window from navigating to external URLs
   // This prevents XSS via navigation to malicious pages that could
   // still receive IPC messages from the main process

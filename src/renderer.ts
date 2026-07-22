@@ -56,8 +56,15 @@ updatePreview();
 
 /**
  * Handle the "New" menu action: clear the editor and reset the preview.
+ * Shows a confirmation dialog if there is existing content in the editor.
  */
 window.electronAPI.onNew(() => {
+  if (editor.value.trim().length > 0) {
+    const confirmed = confirm(
+      "The editor contains unsaved changes. Create a new document anyway?",
+    );
+    if (!confirmed) return;
+  }
   editor.value = "";
   preview.innerHTML = "";
 });
