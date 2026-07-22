@@ -10,7 +10,6 @@ This file defines coding preferences and conventions that the Clara agent should
 ## General Guidelines
 
 - Keep edits small and verifiable.
-- Prefer one tool call per turn when possible.
 - Quote exact file paths, line numbers, and commands.
 - Match existing indentation and style patterns in the file being edited.
 - **Self-Verification:** Always check your work (e.g., re-read edited files, run diagnostics, confirm file contents) before sending back a final response.

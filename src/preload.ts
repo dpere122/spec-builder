@@ -65,11 +65,20 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
 
   /**
-   * Send the selected theme name to the main process so it can be persisted (future).
+   * Send a theme selection to the main process for persistence.
    *
-   * @param theme - The name of the selected theme
+   * @param theme - The selected theme name
    */
   selectTheme: (theme: string) => {
     ipcRenderer.send("select-theme", theme);
+  },
+
+  /**
+   * Listen for the saved theme on startup.
+   *
+   * @param callback - Function called with the saved theme name
+   */
+  onLoadTheme: (callback: (theme: string) => void) => {
+    ipcRenderer.on("menu:load-theme", (_event, theme) => callback(theme));
   },
 });

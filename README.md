@@ -88,9 +88,9 @@ This application was developed using **Clara Coder**, a custom agentic-powered e
 
 ### Model Information
 
-- **Model:** Qwen3.6-27B
+- **Model:** Qwen3.6-27B/Gemma-4-31B
 - **Runtime:** Running locally via llama.cpp
-- **Quantization:** Q8_K_M
+- **Quantization:** Q8
 
 ---
 

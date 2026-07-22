@@ -83,10 +83,11 @@ function createWindow(): BrowserWindow {
       contextIsolation: true,
       nodeIntegration: false,
       webSecurity: true, // Enforce same-origin policy
-      allowRunningInsecureContent: false, // Prevent mixed content (HTTP + HTTPS)
+      allowRunningInsecureContent: false, // Prevent mixed content (LCP)
       spellcheck: false, // Disable spellcheck to avoid telemetry
     },
   });
+  mainWindow = window;
 
   // Set up renderer console logging to file
   const logFile = setupLog();
@@ -148,24 +149,20 @@ function createWindow(): BrowserWindow {
     window.loadFile(path.join(__dirname, "..", "index.html"));
   }
 
-  // Lock navigation: prevent the window from navigating to external URLs
-  // This prevents XSS via navigation to malicious pages that could
-  // still receive IPC messages from the main process
-  window.webContents.on("will-navigate", (event, url) => {
-    // Allow navigation to the dev server URL or file:// URLs we control
-    const isDevUrl = devServerUrl && url.startsWith(devServerUrl);
-    const isFileUrl = url.startsWith("file://");
-
-    if (!isDevUrl && !isFileUrl) {
-      event.preventDefault();
-      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-      fs.appendFileSync(logFile, `[${timestamp}] BLOCKED NAVIGATION: ${url}\n`);
+  // Load persisted theme if it exists (after load to ensure renderer is ready)
+  const configPath = path.join(app.getPath("userData"), "config.json");
+  try {
+    if (fs.existsSync(configPath)) {
+      const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+      if (config.theme) {
+        window.webContents.once("did-finish-load", () => {
+          window.webContents.send("menu:load-theme", config.theme);
+        });
+      }
     }
-  });
-
-  // Store the window reference for menu actions
-  mainWindow = window;
-
+  } catch (err) {
+    console.error("Failed to load config on startup:", err);
+  }
   return window;
 }
 
@@ -301,37 +298,37 @@ app.whenReady().then(() => {
 
 // IPC handler: renderer sends the current editor content back for saving
 // Security: verify the sender is our own renderer and the path was approved by the dialog
-ipcMain.on("save-content", (event, content: string, filePath: string) => {
-  // Verify the IPC message came from our own renderer process
-  // A navigated-to external page would have a different origin
-  const senderId = event.senderFrame?.processId;
-  const windowId = event.senderFrame?.frameTreeNodeId;
+ipcMain.on("select-theme", (event, theme: string) => {
+  const configPath = path.join(app.getPath("userData"), "config.json");
+  console.log(
+    `[Theme IPC] Received select-theme: ${theme}. Target path: ${configPath}`,
+  );
 
-  if (senderId === undefined || windowId === undefined) {
-    console.error("IPC save-content: rejected — unknown sender frame");
-    return;
+  let config = {};
+  try {
+    if (fs.existsSync(configPath)) {
+      config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+      console.log(
+        `[Theme IPC] Existing config found: ${JSON.stringify(config)}`,
+      );
+    }
+  } catch (err) {
+    console.error("Failed to read config file:", err);
   }
 
-  // Validate that the file path was approved by the save dialog
-  // The renderer should only receive save prompts for paths we authorized
-  if (!filePath || typeof filePath !== "string") {
-    console.error("IPC save-content: rejected — invalid file path");
-    return;
-  }
+  config.theme = theme;
 
-  // Only allow saving to the currently tracked file or the dialog-approved path
-  if (filePath !== currentFilePath) {
-    console.error(
-      "IPC save-content: rejected — path mismatch (possible path traversal)",
+  try {
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    console.log(
+      `[Theme IPC] Successfully saved theme: ${theme} to ${configPath}`,
     );
-    return;
+  } catch (err) {
+    console.error("Failed to save config file:", err);
   }
 
-  // Write the file content to disk
-  fs.writeFileSync(filePath, content, "utf-8");
-
-  // Notify the renderer that the save succeeded
-  mainWindow?.webContents.send("menu:save-done", { filePath });
+  // Notify the renderer that the theme has been saved
+  mainWindow?.webContents.send("menu:load-theme", theme);
 });
 
 // Quit the app when all windows are closed (except on macOS, where the app stays active)
@@ -339,14 +336,15 @@ app.on("window-all-closed", () => {
   mainWindow = null;
   if (isDevMode) {
     // In dev mode, kill the parent Vite dev server process so the terminal returns
-    // process.ppid is Electron's parent (Vite). Kill it by signal.
     try {
       process.kill(process.ppid, "SIGTERM");
-    } catch {
-      // ppid may not be Vite in some environments; fall through to normal quit
-      app.quit();
+    } catch (err) {
+      console.error("Failed to kill parent process:", err);
     }
-  } else if (process.platform !== "darwin") {
+  }
+
+  // Quit the app when all windows are closed (except on macOS, where the app stays active)
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });

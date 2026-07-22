@@ -52,6 +52,22 @@ editor.addEventListener("input", updatePreview);
 // Render the preview on initial page load
 updatePreview();
 
+/**
+ * Logic to toggle the preview pane visibility.
+ * Listens for clicks on the preview-toggle button and toggles the 'collapsed' class
+ * on both the button (to rotate the chevron) and the preview pane (to show/hide it).
+ */
+const previewToggle = document.getElementById(
+  "preview-toggle",
+) as HTMLButtonElement;
+const previewPane = document.querySelector(".preview-pane") as HTMLDivElement;
+
+previewToggle.addEventListener("click", () => {
+  previewPane.classList.toggle("collapsed");
+  previewToggle.classList.toggle("collapsed");
+});
+
+// --- Menu IPC handlers ---
 // --- Menu IPC handlers ---
 
 /**
@@ -107,7 +123,7 @@ window.electronAPI.onSaveDone((data: { filePath: string }) => {
  *
  * @param theme - The theme identifier to apply (e.g., "dark", "sepia")
  */
-function applyTheme(theme: string): void {
+function applyTheme(theme: string, persist: boolean = true): void {
   // Remove all existing theme classes from the body
   THEMES.forEach((t) => {
     document.body.classList.remove(`theme-${t}`);
@@ -115,7 +131,12 @@ function applyTheme(theme: string): void {
 
   // Add the new theme class
   document.body.classList.add(`theme-${theme}`);
-  currentTheme = theme;
+  if (persist) {
+    // Only send selectTheme once per theme change
+    if (currentTheme !== theme) {
+      window.electronAPI.selectTheme(theme);
+    }
+  }
 
   // Update active state on theme buttons
   const buttons = document.querySelectorAll(".theme-btn");
@@ -128,8 +149,7 @@ function applyTheme(theme: string): void {
     }
   });
 
-  // Send theme selection to main process for potential persistence
-  window.electronAPI.selectTheme(theme);
+  currentTheme = theme;
 }
 
 /**
@@ -177,41 +197,7 @@ themeModal.addEventListener("click", (e) => {
   }
 });
 
-// --- Preview Pane Toggle ---
-
-/** Reference to the preview pane container. */
-const previewPane = document.querySelector(".preview-pane") as HTMLDivElement;
-
-/** Reference to the toggle button for the preview pane. */
-const previewToggle = document.getElementById(
-  "preview-toggle",
-) as HTMLButtonElement;
-
-/** Whether the preview pane is currently collapsed. */
-let previewCollapsed: boolean = true;
-
-/**
- * Toggle the visibility of the preview pane.
- *
- * When collapsed, the preview pane disappears and the editor fills the full width.
- * When expanded, the split-pane layout is restored.
- */
-function togglePreviewPane(): void {
-  previewCollapsed = !previewCollapsed;
-
-  if (previewCollapsed) {
-    previewPane.classList.add("collapsed");
-    previewToggle.classList.add("collapsed");
-    previewToggle.textContent = "▶";
-  } else {
-    previewPane.classList.remove("collapsed");
-    previewToggle.classList.remove("collapsed");
-    previewToggle.textContent = "◀";
-  }
-}
-
-// Wire up the preview toggle button
-previewToggle.addEventListener("click", togglePreviewPane);
-
-// Apply the default theme on initial load
-applyTheme("light");
+// Listen for theme changes from the main process (for persistence)
+window.electronAPI.onLoadTheme((theme) => {
+  applyTheme(theme);
+});
