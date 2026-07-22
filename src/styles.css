@@ -255,6 +255,10 @@ body {
   background: #000;
 }
 
+.magenta-swatch {
+  background: #ff00ff;
+}
+
 /* Modal close button */
 .modal-close-btn {
   display: block;
@@ -562,6 +566,109 @@ body.theme-high-contrast .preview-toggle {
 body.theme-high-contrast .preview-toggle:hover {
   background: #111;
   color: #fff;
+}
+
+body.theme-high-contrast .preview-toggle:active {
+  background: #333;
+}
+
+/* ===================================
+   Theme: Magenta
+   =================================== */
+body.theme-magenta {
+  background: #300030;
+  color: #ffccff;
+}
+
+body.theme-magenta .editor-pane {
+  border-right-color: #600060;
+}
+
+body.theme-magenta .editor {
+  background: #300030;
+  color: #ffccff;
+}
+
+body.theme-magenta .preview {
+  background: #300030;
+  color: #ffccff;
+}
+
+body.theme-magenta .preview code {
+  background: #400040;
+  color: #ffccff;
+}
+
+body.theme-magenta .preview pre {
+  background: #400040;
+}
+
+body.theme-magenta .preview blockquote {
+  border-left-color: #800080;
+  color: #ff99ff;
+}
+
+body.theme-magenta .preview table {
+  border-color: #600060;
+}
+
+body.theme-magenta .preview th,
+body.theme-magenta .preview td {
+  border-color: #600060;
+}
+
+body.theme-magenta .preview th {
+  background: #400040;
+}
+
+body.theme-magenta .modal-content {
+  background: #400040;
+  color: #ffccff;
+  border: 1px solid #800080;
+}
+
+body.theme-magenta .modal-content h2 {
+  color: #ffccff;
+}
+
+body.theme-magenta .theme-btn {
+  background: #500050;
+  border-color: #800080;
+  color: #ffccff;
+}
+
+body.theme-magenta .theme-btn:hover {
+  border-color: #ff00ff;
+}
+
+body.theme-magenta .theme-btn.active {
+  border-color: #ff00ff;
+}
+
+body.theme-magenta .modal-close-btn {
+  background: #500050;
+  border-color: #800080;
+  color: #ffccff;
+}
+
+body.theme-magenta .modal-close-btn:hover {
+  background: #600060;
+}
+
+body.theme-magenta .preview-toggle {
+  background: #400040;
+  border-left-color: #600060;
+  border-right-color: #600060;
+  color: #ff99ff;
+}
+
+body.theme-magenta .preview-toggle:hover {
+  background: #500050;
+  color: #ffccff;
+}
+
+body.theme-magenta .preview-toggle:active {
+  background: #600060;
 }
 
 body.theme-high-contrast .preview-toggle:active {
