@@ -259,6 +259,10 @@ body {
   background: #ff00ff;
 }
 
+.blue-ocean-swatch {
+  background: #003366;
+}
+
 /* Modal close button */
 .modal-close-btn {
   display: block;
@@ -667,8 +671,107 @@ body.theme-magenta .preview-toggle:hover {
   color: #ffccff;
 }
 
-body.theme-magenta .preview-toggle:active {
-  background: #600060;
+body.theme-high-contrast .preview-toggle:active {
+  background: #333;
+}
+
+/* ===================================
+   Theme: Blue Ocean
+   =================================== */
+body.theme-blue-ocean {
+  background: #001f3f;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .editor-pane {
+  border-right-color: #003366;
+}
+
+body.theme-blue-ocean .editor {
+  background: #001f3f;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview {
+  background: #001f3f;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview code {
+  background: #003366;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview pre {
+  background: #003366;
+}
+
+body.theme-blue-ocean .preview blockquote {
+  border-left-color: #0074d9;
+  color: #b3e5fc;
+}
+
+body.theme-blue-ocean .preview table {
+  border-color: #003366;
+}
+
+body.theme-blue-ocean .preview th,
+body.theme-blue-ocean .preview td {
+  border-color: #003366;
+}
+
+body.theme-blue-ocean .preview th {
+  background: #003366;
+}
+
+body.theme-blue-ocean .modal-content {
+  background: #003366;
+  color: #e1f5fe;
+  border: 1px solid #0074d9;
+}
+
+body.theme-blue-ocean .modal-content h2 {
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .theme-btn {
+  background: #004080;
+  border-color: #0074d9;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .theme-btn:hover {
+  border-color: #b3e5fc;
+}
+
+body.theme-blue-ocean .theme-btn.active {
+  border-color: #b3e5fc;
+}
+
+body.theme-blue-ocean .modal-close-btn {
+  background: #004080;
+  border-color: #0074d9;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .modal-close-btn:hover {
+  background: #0059b3;
+}
+
+body.theme-blue-ocean .preview-toggle {
+  background: #003366;
+  border-left-color: #004080;
+  border-right-color: #004080;
+  color: #b3e5fc;
+}
+
+body.theme-blue-ocean .preview-toggle:hover {
+  background: #004080;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview-toggle:active {
+  background: #0059b3;
 }
 
 body.theme-high-contrast .preview-toggle:active {
