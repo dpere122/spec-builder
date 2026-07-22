@@ -90,7 +90,7 @@ This application was developed using **Clara Coder**, a custom agentic-powered e
 
 - **Model:** Qwen3.6-27B
 - **Runtime:** Running locally via llama.cpp
-- **Quantization:** Q4_K_M
+- **Quantization:** Q8_K_M
 
 ---
 
