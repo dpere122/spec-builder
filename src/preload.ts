@@ -81,4 +81,29 @@ contextBridge.exposeInMainWorld("electronAPI", {
   onLoadTheme: (callback: (theme: string) => void) => {
     ipcRenderer.on("menu:load-theme", (_event, theme) => callback(theme));
   },
+
+  /**
+   * Read text from the system clipboard.
+   *
+   * @returns Promise resolving to the clipboard text
+   */
+  readClipboard: async (): Promise<string> => {
+    return ipcRenderer.invoke("clipboard-read");
+  },
+
+  /**
+   * Write text to the system clipboard.
+   *
+   * @param text - The text to write to the clipboard
+   */
+  writeClipboard: async (text: string): Promise<void> => {
+    return ipcRenderer.invoke("clipboard-write", text);
+  },
+
+  /**
+   * Clear the system clipboard.
+   */
+  clearClipboard: async (): Promise<void> => {
+    return ipcRenderer.invoke("clipboard-clear");
+  },
 });

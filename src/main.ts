@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, dialog, ipcMain } from "electron";
+import { app, BrowserWindow, Menu, clipboard, dialog, ipcMain } from "electron";
 import * as path from "path";
 import * as fs from "fs";
 
@@ -329,6 +329,19 @@ ipcMain.on("select-theme", (event, theme: string) => {
 
   // Notify the renderer that the theme has been saved
   mainWindow?.webContents.send("menu:load-theme", theme);
+});
+
+// IPC handlers: clipboard access for the renderer's context menu
+ipcMain.handle("clipboard-read", () => {
+  return clipboard.readText();
+});
+
+ipcMain.handle("clipboard-write", (_event, text: string) => {
+  clipboard.writeText(text);
+});
+
+ipcMain.handle("clipboard-clear", () => {
+  clipboard.clear();
 });
 
 // Quit the app when all windows are closed (except on macOS, where the app stays active)

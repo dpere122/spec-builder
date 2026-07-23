@@ -16,6 +16,10 @@ declare global {
       saveContent: (content: string, filePath: string) => void;
       onThemes: (callback: () => void) => void;
       selectTheme: (theme: string) => void;
+      onLoadTheme: (callback: (theme: string) => void) => void;
+      readClipboard: () => Promise<string>;
+      writeClipboard: (text: string) => Promise<void>;
+      clearClipboard: () => Promise<void>;
     };
   }
 }

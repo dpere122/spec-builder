@@ -208,3 +208,214 @@ themeModal.addEventListener("click", (e) => {
 window.electronAPI.onLoadTheme((theme) => {
   applyTheme(theme);
 });
+
+// --- Context Menu ---
+
+/** Reference to the custom context menu element. */
+const contextMenu = document.getElementById(
+  "context-menu",
+) as HTMLDivElement | null;
+
+/**
+ * Hide the context menu.
+ */
+function hideContextMenu(): void {
+  if (contextMenu) {
+    contextMenu.classList.remove("visible");
+  }
+}
+
+/**
+ * Show the context menu at the given position, clamped to viewport bounds.
+ */
+function showContextMenu(x: number, y: number): void {
+  if (!contextMenu) return;
+
+  // Clamp to viewport
+  const menuWidth = contextMenu.offsetWidth || 160;
+  const menuHeight = contextMenu.offsetHeight || 100;
+  const clampedX = Math.min(x, window.innerWidth - menuWidth - 4);
+  const clampedY = Math.min(y, window.innerHeight - menuHeight - 4);
+
+  contextMenu.style.left = `${Math.max(4, clampedX)}px`;
+  contextMenu.style.top = `${Math.max(4, clampedY)}px`;
+  contextMenu.classList.add("visible");
+}
+
+/**
+ * Get the selected text from the editor textarea.
+ */
+function getEditorSelection(): {
+  text: string;
+  start: number;
+  end: number;
+} {
+  const start = editor.selectionStart ?? 0;
+  const end = editor.selectionEnd ?? 0;
+  return {
+    text: editor.value.slice(start, end),
+    start,
+    end,
+  };
+}
+
+/**
+ * Get the selected text from the preview div.
+ */
+function getPreviewSelection(): string {
+  const selection = window.getSelection();
+  if (!selection) return "";
+  const range = selection.getRangeAt(0);
+  // Only return text if the selection is inside the preview
+  if (!preview.contains(range.commonAncestorContainer)) return "";
+  return selection.toString();
+}
+
+/**
+ * Build the context menu items for the given target.
+ */
+function buildContextMenuItems(
+  target: "editor" | "preview",
+): Array<{ label: string; action: () => void; shortcut?: string }> {
+  const items: Array<{ label: string; action: () => void; shortcut?: string }> =
+    [];
+
+  if (target === "editor") {
+    items.push({
+      label: "Cut",
+      shortcut: "Ctrl+X",
+      action: async () => {
+        const sel = getEditorSelection();
+        if (sel.text.length > 0) {
+          await window.electronAPI.writeClipboard(sel.text);
+          // Delete the selected text
+          editor.setRangeText("", sel.start, sel.end, "select");
+        }
+        hideContextMenu();
+      },
+    });
+  }
+
+  items.push({
+    label: "Copy",
+    shortcut: "Ctrl+C",
+    action: async () => {
+      const text =
+        target === "editor" ? getEditorSelection().text : getPreviewSelection();
+      if (text.length > 0) {
+        await window.electronAPI.writeClipboard(text);
+      }
+      hideContextMenu();
+    },
+  });
+
+  if (target === "editor") {
+    items.push({
+      label: "Paste",
+      shortcut: "Ctrl+V",
+      action: async () => {
+        const clipText = await window.electronAPI.readClipboard();
+        if (clipText.length > 0) {
+          const start = editor.selectionStart ?? editor.value.length;
+          const end = editor.selectionEnd ?? editor.value.length;
+          editor.setRangeText(clipText, start, end, "end");
+          // Trigger input event to update preview
+          editor.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+        hideContextMenu();
+      },
+    });
+  }
+
+  items.push({
+    label: "Select All",
+    shortcut: "Ctrl+A",
+    action: () => {
+      if (target === "editor") {
+        editor.select();
+        editor.focus();
+      } else {
+        // Select all text in the preview div
+        const range = document.createRange();
+        range.selectNodeContents(preview);
+        const sel = window.getSelection();
+        if (sel) {
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+      hideContextMenu();
+    },
+  });
+
+  return items;
+}
+
+/**
+ * Populate and show the context menu for the given target.
+ */
+function renderContextMenu(
+  target: "editor" | "preview",
+  x: number,
+  y: number,
+): void {
+  if (!contextMenu) return;
+
+  const items = buildContextMenuItems(target);
+  contextMenu.innerHTML = "";
+
+  items.forEach((item, index) => {
+    // Add separator before Select All
+    if (index > 0 && item.label === "Select All") {
+      const sep = document.createElement("div");
+      sep.className = "context-menu-separator";
+      contextMenu.appendChild(sep);
+    }
+
+    const menuItem = document.createElement("div");
+    menuItem.className = "context-menu-item";
+
+    const labelSpan = document.createElement("span");
+    labelSpan.textContent = item.label;
+    menuItem.appendChild(labelSpan);
+
+    if (item.shortcut) {
+      const shortcutSpan = document.createElement("span");
+      shortcutSpan.className = "shortcut";
+      shortcutSpan.textContent = item.shortcut;
+      menuItem.appendChild(shortcutSpan);
+    }
+
+    menuItem.addEventListener("click", () => {
+      item.action();
+    });
+
+    contextMenu.appendChild(menuItem);
+  });
+
+  showContextMenu(x, y);
+}
+
+// Hide context menu when clicking anywhere else
+document.addEventListener("click", (e) => {
+  if (contextMenu && contextMenu.classList.contains("visible")) {
+    if (
+      !contextMenu.contains(e.target as Node) &&
+      !(e.target as HTMLElement).classList.contains("context-menu-item")
+    ) {
+      hideContextMenu();
+    }
+  }
+});
+
+// Context menu on the editor textarea
+editor.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  renderContextMenu("editor", e.clientX, e.clientY);
+});
+
+// Context menu on the preview div
+preview.addEventListener("contextmenu", (e) => {
+  e.preventDefault();
+  renderContextMenu("preview", e.clientX, e.clientY);
+});
