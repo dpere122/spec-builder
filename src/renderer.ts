@@ -9,7 +9,14 @@ const editor = document.getElementById("editor") as HTMLTextAreaElement;
 const preview = document.getElementById("preview") as HTMLDivElement;
 
 /** Available theme identifiers for the theme picker. */
-const THEMES: string[] = ["light", "dark", "sepia", "high-contrast"];
+const THEMES: string[] = [
+  "light",
+  "dark",
+  "sepia",
+  "high-contrast",
+  "magenta",
+  "blue-ocean",
+];
 
 /** The currently active theme name. Defaults to "light". */
 let currentTheme: string = "light";
