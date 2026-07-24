@@ -44,7 +44,7 @@ spec-builder/
 
 ## Themes
 
-Accessed via **Help → Themes...** in the application menu, the theme picker opens a modal dialog with four built-in themes:
+Accessed via **Help → Themes...** in the application menu, the theme picker opens a modal dialog with eight built-in themes:
 
 | Theme | Description |
 |---|---|
@@ -52,6 +52,10 @@ Accessed via **Help → Themes...** in the application menu, the theme picker op
 | **Dark** | Dark background with light text for low-light environments |
 | **Sepia** | Warm, paper-like tones to reduce eye strain |
 | **High Contrast** | Maximum contrast (black background, bright text) for accessibility |
+| **Magenta** | Deep purple-dark background with vibrant magenta accents |
+| **Blue Ocean** | Deep navy background with cool blue accents |
+| **Orange** | Warm light background with rich orange accents |
+| **Pink** | Soft light background with delicate pink accents |
 
 Each theme applies CSS custom properties to the editor, preview pane, and UI chrome. Selections are persisted via `localStorage` so the chosen theme is restored on startup.
 
