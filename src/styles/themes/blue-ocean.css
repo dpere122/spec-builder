@@ -1,0 +1,93 @@
+/* ===================================
+   Theme: Blue Ocean
+   =================================== */
+
+body.theme-blue-ocean {
+  background: #0a1929;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .editor {
+  background: #0a1929;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview {
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview code,
+body.theme-blue-ocean .preview pre {
+  background: #1a2a3a;
+}
+
+body.theme-blue-ocean .preview blockquote {
+  border-left-color: #1565c0;
+  color: #90caf9;
+}
+
+body.theme-blue-ocean .preview th {
+  background: #1a2a3a;
+}
+
+body.theme-blue-ocean .preview td,
+body.theme-blue-ocean .preview th {
+  border-color: #1a3a5a;
+}
+
+body.theme-blue-ocean .editor-pane {
+  border-right-color: #1a3a5a;
+}
+
+body.theme-blue-ocean .preview-toggle {
+  background: #1a2a3a;
+  color: #90caf9;
+  border-left-color: #1a3a5a;
+  border-right-color: #1a3a5a;
+}
+
+body.theme-blue-ocean .preview-toggle:hover {
+  background: #2a3a4a;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .preview-toggle:active {
+  background: #3a4a5a;
+}
+
+body.theme-blue-ocean .modal-content {
+  background: #0a1929;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .modal-content h2 {
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .theme-btn {
+  background: #1a2a3a;
+  border-color: #1a3a5a;
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .theme-btn:hover {
+  border-color: #1565c0;
+}
+
+body.theme-blue-ocean .theme-btn.active {
+  border-color: #42a5f5;
+  box-shadow: 0 0 0 1px #42a5f5;
+}
+
+body.theme-blue-ocean .theme-label {
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .modal-close-btn {
+  background: #1565c0;
+  color: #fff;
+}
+
+body.theme-blue-ocean .modal-close-btn:hover {
+  background: #0d47a1;
+}

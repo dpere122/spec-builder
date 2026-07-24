@@ -1,0 +1,177 @@
+/* ===================================
+   Context Menu
+   =================================== */
+
+#context-menu {
+  position: fixed;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+  min-width: 160px;
+  z-index: 2000;
+  display: none;
+}
+
+#context-menu.visible {
+  display: block;
+}
+
+.context-menu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.1s;
+}
+
+.context-menu-item:hover {
+  background: #e8f0fe;
+}
+
+.context-menu-item .shortcut {
+  margin-left: auto;
+  color: #888;
+  font-size: 12px;
+}
+
+.context-menu-separator {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 4px 0;
+}
+
+/* Dark theme context menu */
+body.theme-dark #context-menu {
+  background: #2d2d2d;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.theme-dark .context-menu-item {
+  color: #e0e0e0;
+}
+
+body.theme-dark .context-menu-item:hover {
+  background: #3d3d3d;
+}
+
+body.theme-dark .context-menu-separator {
+  background: #555;
+}
+
+body.theme-dark .context-menu-item .shortcut {
+  color: #999;
+}
+
+/* Sepia theme context menu */
+body.theme-sepia #context-menu {
+  background: #f4ecd8;
+  border-color: #d4c8a0;
+}
+
+body.theme-sepia .context-menu-item {
+  color: #5b4636;
+}
+
+body.theme-sepia .context-menu-item:hover {
+  background: #e8dcc0;
+}
+
+body.theme-sepia .context-menu-separator {
+  background: #d4c8a0;
+}
+
+/* High-contrast theme context menu */
+body.theme-high-contrast #context-menu {
+  background: #000;
+  border-color: #fff;
+}
+
+body.theme-high-contrast .context-menu-item {
+  color: #fff;
+}
+
+body.theme-high-contrast .context-menu-item:hover {
+  background: #333;
+}
+
+body.theme-high-contrast .context-menu-separator {
+  background: #fff;
+}
+
+/* Magenta theme context menu */
+body.theme-magenta #context-menu {
+  background: #1a0a1a;
+  border-color: #c71585;
+}
+
+body.theme-magenta .context-menu-item {
+  color: #f0e0f0;
+}
+
+body.theme-magenta .context-menu-item:hover {
+  background: #2a1030;
+}
+
+body.theme-magenta .context-menu-separator {
+  background: #c71585;
+}
+
+/* Blue-ocean theme context menu */
+body.theme-blue-ocean #context-menu {
+  background: #0a1929;
+  border-color: #1565c0;
+}
+
+body.theme-blue-ocean .context-menu-item {
+  color: #e1f5fe;
+}
+
+body.theme-blue-ocean .context-menu-item:hover {
+  background: #1a2a3a;
+}
+
+body.theme-blue-ocean .context-menu-separator {
+  background: #1565c0;
+}
+
+/* Orange theme context menu */
+body.theme-orange #context-menu {
+  background: #fff1e0;
+  border-color: #e0c8a8;
+}
+
+body.theme-orange .context-menu-item {
+  color: #5a2e00;
+}
+
+body.theme-orange .context-menu-item:hover {
+  background: #fdebd0;
+}
+
+body.theme-orange .context-menu-separator {
+  background: #e0c8a8;
+}
+
+/* Pink theme context menu */
+body.theme-pink #context-menu {
+  background: #ffe0eb;
+  border-color: #e0b0c8;
+}
+
+body.theme-pink .context-menu-item {
+  color: #5a0020;
+}
+
+body.theme-pink .context-menu-item:hover {
+  background: #f8d0e0;
+}
+
+body.theme-pink .context-menu-separator {
+  background: #e0b0c8;
+}

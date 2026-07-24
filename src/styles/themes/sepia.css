@@ -1,0 +1,93 @@
+/* ===================================
+   Theme: Sepia
+   =================================== */
+
+body.theme-sepia {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .editor {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .preview {
+  color: #5b4636;
+}
+
+body.theme-sepia .preview code,
+body.theme-sepia .preview pre {
+  background: #e8dcc0;
+}
+
+body.theme-sepia .preview blockquote {
+  border-left-color: #c4b080;
+  color: #8a7a60;
+}
+
+body.theme-sepia .preview th {
+  background: #e8dcc0;
+}
+
+body.theme-sepia .preview td,
+body.theme-sepia .preview th {
+  border-color: #d4c8a0;
+}
+
+body.theme-sepia .editor-pane {
+  border-right-color: #d4c8a0;
+}
+
+body.theme-sepia .preview-toggle {
+  background: #e8dcc0;
+  color: #8a7a60;
+  border-left-color: #d4c8a0;
+  border-right-color: #d4c8a0;
+}
+
+body.theme-sepia .preview-toggle:hover {
+  background: #dcc8a8;
+  color: #5b4636;
+}
+
+body.theme-sepia .preview-toggle:active {
+  background: #d0bc98;
+}
+
+body.theme-sepia .modal-content {
+  background: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .modal-content h2 {
+  color: #5b4636;
+}
+
+body.theme-sepia .theme-btn {
+  background: #e8dcc0;
+  border-color: #d4c8a0;
+  color: #5b4636;
+}
+
+body.theme-sepia .theme-btn:hover {
+  border-color: #b4a070;
+}
+
+body.theme-sepia .theme-btn.active {
+  border-color: #8a6a30;
+  box-shadow: 0 0 0 1px #8a6a30;
+}
+
+body.theme-sepia .theme-label {
+  color: #5b4636;
+}
+
+body.theme-sepia .modal-close-btn {
+  background: #8a6a30;
+  color: #f4ecd8;
+}
+
+body.theme-sepia .modal-close-btn:hover {
+  background: #6a5020;
+}

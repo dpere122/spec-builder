@@ -1,0 +1,438 @@
+/* ===================================
+   Theme Picker Modal Dialog Styles
+   =================================== */
+
+/* Modal overlay: semi-transparent backdrop */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal content box */
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Theme button grid */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Individual theme button */
+.theme-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  font-size: 13px;
+}
+
+.theme-btn:hover {
+  border-color: #aaa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-btn.active {
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 1px #4a90d9;
+}
+
+/* Theme preview swatch */
+.theme-swatch {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Swatch preview colors — one per theme */
+.light-swatch {
+  background: linear-gradient(135deg, #fafafa 50%, #f0f0f0 50%);
+}
+
+.dark-swatch {
+  background: linear-gradient(135deg, #1e1e1e 50%, #2d2d2d 50%);
+}
+
+.sepia-swatch {
+  background: linear-gradient(135deg, #f4ecd8 50%, #e8dcc0 50%);
+}
+
+.high-contrast-swatch {
+  background: linear-gradient(135deg, #000 50%, #fff 50%);
+}
+
+.magenta-swatch {
+  background: linear-gradient(135deg, #1a0a1a 50%, #c71585 50%);
+}
+
+.blue-ocean-swatch {
+  background: linear-gradient(135deg, #0a1929 50%, #1565c0 50%);
+}
+
+.orange-swatch {
+  background: linear-gradient(135deg, #fff1e0 50%, #e67e22 50%);
+}
+.pink-swatch {
+  background: linear-gradient(135deg, #ffe0eb 50%, #e91e8f 50%);
+}
+
+/* ===================================
+   Mini theme preview panels
+   =================================== */
+
+.theme-preview {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.preview-editor {
+  flex: 1;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  border-right: 1px solid #ccc;
+}
+
+.preview-line {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 7px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-rendered {
+  flex: 1;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+}
+
+.preview-heading {
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.preview-text {
+  font-size: 7px;
+  line-height: 1.3;
+}
+
+.preview-list {
+  font-size: 7px;
+  line-height: 1.3;
+}
+
+/* Light preview */
+.light-preview {
+  background: #fff;
+}
+
+.light-preview .preview-editor {
+  background: #fafafa;
+  border-right-color: #ccc;
+}
+
+.light-preview .preview-line {
+  color: #333;
+}
+
+.light-preview .preview-rendered {
+  background: #fff;
+}
+
+.light-preview .preview-heading {
+  color: #333;
+}
+
+.light-preview .preview-text {
+  color: #333;
+}
+
+.light-preview .preview-list {
+  color: #333;
+}
+
+/* Dark preview */
+.dark-preview {
+  background: #1e1e1e;
+  border-color: #444;
+}
+
+.dark-preview .preview-editor {
+  background: #1e1e1e;
+  border-right-color: #444;
+}
+
+.dark-preview .preview-line {
+  color: #d4d4d4;
+}
+
+.dark-preview .preview-rendered {
+  background: #1e1e1e;
+}
+
+.dark-preview .preview-heading {
+  color: #d4d4d4;
+}
+
+.dark-preview .preview-text {
+  color: #d4d4d4;
+}
+
+.dark-preview .preview-list {
+  color: #d4d4d4;
+}
+
+/* Sepia preview */
+.sepia-preview {
+  background: #f4ecd8;
+  border-color: #d4c8a0;
+}
+
+.sepia-preview .preview-editor {
+  background: #f4ecd8;
+  border-right-color: #d4c8a0;
+}
+
+.sepia-preview .preview-line {
+  color: #5b4636;
+}
+
+.sepia-preview .preview-rendered {
+  background: #f4ecd8;
+}
+
+.sepia-preview .preview-heading {
+  color: #5b4636;
+}
+
+.sepia-preview .preview-text {
+  color: #5b4636;
+}
+
+.sepia-preview .preview-list {
+  color: #5b4636;
+}
+
+/* High contrast preview */
+.high-contrast-preview {
+  background: #000;
+  border-color: #fff;
+}
+
+.high-contrast-preview .preview-editor {
+  background: #000;
+  border-right-color: #fff;
+}
+
+.high-contrast-preview .preview-line {
+  color: #fff;
+}
+
+.high-contrast-preview .preview-rendered {
+  background: #000;
+}
+
+.high-contrast-preview .preview-heading {
+  color: #fff;
+}
+
+.high-contrast-preview .preview-text {
+  color: #fff;
+}
+
+.high-contrast-preview .preview-list {
+  color: #fff;
+}
+
+/* Magenta preview */
+.magenta-preview {
+  background: #1a0a1a;
+  border-color: #5a2060;
+}
+
+.magenta-preview .preview-editor {
+  background: #1a0a1a;
+  border-right-color: #5a2060;
+}
+
+.magenta-preview .preview-line {
+  color: #f0e0f0;
+}
+
+.magenta-preview .preview-rendered {
+  background: #1a0a1a;
+}
+
+.magenta-preview .preview-heading {
+  color: #f0e0f0;
+}
+
+.magenta-preview .preview-text {
+  color: #f0e0f0;
+}
+
+.magenta-preview .preview-list {
+  color: #f0e0f0;
+}
+
+/* Blue ocean preview */
+.blue-ocean-preview {
+  background: #0a1929;
+  border-color: #1a3a5a;
+}
+
+.blue-ocean-preview .preview-editor {
+  background: #0a1929;
+  border-right-color: #1a3a5a;
+}
+
+.blue-ocean-preview .preview-line {
+  color: #e1f5fe;
+}
+
+.blue-ocean-preview .preview-rendered {
+  background: #0a1929;
+}
+
+.blue-ocean-preview .preview-heading {
+  color: #e1f5fe;
+}
+
+.blue-ocean-preview .preview-text {
+  color: #e1f5fe;
+}
+
+.blue-ocean-preview .preview-list {
+  color: #e1f5fe;
+}
+
+/* Orange preview */
+.orange-preview {
+  background: #fff1e0;
+  border-color: #e0c8a8;
+}
+
+.orange-preview .preview-editor {
+  background: #fff1e0;
+  border-right-color: #e0c8a8;
+}
+
+.orange-preview .preview-line {
+  color: #5a2e00;
+}
+
+.orange-preview .preview-rendered {
+  background: #fff1e0;
+}
+
+.orange-preview .preview-heading {
+  color: #5a2e00;
+}
+
+.orange-preview .preview-text {
+  color: #5a2e00;
+}
+
+.orange-preview .preview-list {
+  color: #5a2e00;
+}
+
+/* Pink preview */
+.pink-preview {
+  background: #ffe0eb;
+  border-color: #e0b0c8;
+}
+
+.pink-preview .preview-editor {
+  background: #ffe0eb;
+  border-right-color: #e0b0c8;
+}
+
+.pink-preview .preview-line {
+  color: #5a0020;
+}
+
+.pink-preview .preview-rendered {
+  background: #fff0f5;
+}
+
+.pink-preview .preview-heading {
+  color: #5a0020;
+}
+
+.pink-preview .preview-text {
+  color: #5a0020;
+}
+
+.pink-preview .preview-list {
+  color: #5a0020;
+}
+
+/* Theme label */
+.theme-label {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Close button */
+.modal-close-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 4px;
+  background: #4a90d9;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: #357abd;
+}

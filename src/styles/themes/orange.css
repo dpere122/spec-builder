@@ -1,0 +1,93 @@
+/* ===================================
+   Theme: Orange
+   =================================== */
+
+body.theme-orange {
+  background: #fff8f0;
+  color: #5a2e00;
+}
+
+body.theme-orange .editor {
+  background: #fff1e0;
+  color: #5a2e00;
+}
+
+body.theme-orange .preview {
+  color: #5a2e00;
+}
+
+body.theme-orange .preview code,
+body.theme-orange .preview pre {
+  background: #fdebd0;
+}
+
+body.theme-orange .preview blockquote {
+  border-left-color: #e67e22;
+  color: #8a5a20;
+}
+
+body.theme-orange .preview th {
+  background: #fdebd0;
+}
+
+body.theme-orange .preview td,
+body.theme-orange .preview th {
+  border-color: #e0c8a8;
+}
+
+body.theme-orange .editor-pane {
+  border-right-color: #e0c8a8;
+}
+
+body.theme-orange .preview-toggle {
+  background: #fdebd0;
+  color: #8a5a20;
+  border-left-color: #e0c8a8;
+  border-right-color: #e0c8a8;
+}
+
+body.theme-orange .preview-toggle:hover {
+  background: #f5dab5;
+  color: #5a2e00;
+}
+
+body.theme-orange .preview-toggle:active {
+  background: #edc99a;
+}
+
+body.theme-orange .modal-content {
+  background: #fff1e0;
+  color: #5a2e00;
+}
+
+body.theme-orange .modal-content h2 {
+  color: #5a2e00;
+}
+
+body.theme-orange .theme-btn {
+  background: #fdebd0;
+  border-color: #e0c8a8;
+  color: #5a2e00;
+}
+
+body.theme-orange .theme-btn:hover {
+  border-color: #e67e22;
+}
+
+body.theme-orange .theme-btn.active {
+  border-color: #e67e22;
+  box-shadow: 0 0 0 1px #e67e22;
+}
+
+body.theme-orange .theme-label {
+  color: #5a2e00;
+}
+
+body.theme-orange .modal-close-btn {
+  background: #e67e22;
+  color: #fff;
+}
+
+body.theme-orange .modal-close-btn:hover {
+  background: #d35400;
+}

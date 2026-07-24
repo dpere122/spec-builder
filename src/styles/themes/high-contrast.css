@@ -1,0 +1,94 @@
+/* ===================================
+   Theme: High Contrast
+   =================================== */
+
+body.theme-high-contrast {
+  background: #000;
+  color: #fff;
+}
+
+body.theme-high-contrast .editor {
+  background: #000;
+  color: #fff;
+}
+
+body.theme-high-contrast .preview {
+  color: #fff;
+}
+
+body.theme-high-contrast .preview code,
+body.theme-high-contrast .preview pre {
+  background: #333;
+}
+
+body.theme-high-contrast .preview blockquote {
+  border-left-color: #fff;
+  color: #ccc;
+}
+
+body.theme-high-contrast .preview th {
+  background: #333;
+}
+
+body.theme-high-contrast .preview td,
+body.theme-high-contrast .preview th {
+  border-color: #fff;
+}
+
+body.theme-high-contrast .editor-pane {
+  border-right-color: #fff;
+}
+
+body.theme-high-contrast .preview-toggle {
+  background: #333;
+  color: #fff;
+  border-left-color: #fff;
+  border-right-color: #fff;
+}
+
+body.theme-high-contrast .preview-toggle:hover {
+  background: #555;
+  color: #fff;
+}
+
+body.theme-high-contrast .preview-toggle:active {
+  background: #666;
+}
+
+body.theme-high-contrast .modal-content {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+body.theme-high-contrast .modal-content h2 {
+  color: #fff;
+}
+
+body.theme-high-contrast .theme-btn {
+  background: #111;
+  border-color: #fff;
+  color: #fff;
+}
+
+body.theme-high-contrast .theme-btn:hover {
+  border-color: #fff;
+}
+
+body.theme-high-contrast .theme-btn.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+body.theme-high-contrast .theme-label {
+  color: #fff;
+}
+
+body.theme-high-contrast .modal-close-btn {
+  background: #fff;
+  color: #000;
+}
+
+body.theme-high-contrast .modal-close-btn:hover {
+  background: #ccc;
+}

@@ -1,0 +1,93 @@
+/* ===================================
+   Theme: Pink
+   =================================== */
+
+body.theme-pink {
+  background: #fff0f5;
+  color: #5a0020;
+}
+
+body.theme-pink .editor {
+  background: #ffe0eb;
+  color: #5a0020;
+}
+
+body.theme-pink .preview {
+  color: #5a0020;
+}
+
+body.theme-pink .preview code,
+body.theme-pink .preview pre {
+  background: #f8d0e0;
+}
+
+body.theme-pink .preview blockquote {
+  border-left-color: #e91e8f;
+  color: #8a2050;
+}
+
+body.theme-pink .preview th {
+  background: #f8d0e0;
+}
+
+body.theme-pink .preview td,
+body.theme-pink .preview th {
+  border-color: #e0b0c8;
+}
+
+body.theme-pink .editor-pane {
+  border-right-color: #e0b0c8;
+}
+
+body.theme-pink .preview-toggle {
+  background: #f8d0e0;
+  color: #8a2050;
+  border-left-color: #e0b0c8;
+  border-right-color: #e0b0c8;
+}
+
+body.theme-pink .preview-toggle:hover {
+  background: #f0b8d0;
+  color: #5a0020;
+}
+
+body.theme-pink .preview-toggle:active {
+  background: #e8a0c0;
+}
+
+body.theme-pink .modal-content {
+  background: #ffe0eb;
+  color: #5a0020;
+}
+
+body.theme-pink .modal-content h2 {
+  color: #5a0020;
+}
+
+body.theme-pink .theme-btn {
+  background: #f8d0e0;
+  border-color: #e0b0c8;
+  color: #5a0020;
+}
+
+body.theme-pink .theme-btn:hover {
+  border-color: #e91e8f;
+}
+
+body.theme-pink .theme-btn.active {
+  border-color: #e91e8f;
+  box-shadow: 0 0 0 1px #e91e8f;
+}
+
+body.theme-pink .theme-label {
+  color: #5a0020;
+}
+
+body.theme-pink .modal-close-btn {
+  background: #e91e8f;
+  color: #fff;
+}
+
+body.theme-pink .modal-close-btn:hover {
+  background: #c01070;
+}

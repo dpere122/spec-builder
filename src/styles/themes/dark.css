@@ -1,0 +1,93 @@
+/* ===================================
+   Theme: Dark
+   =================================== */
+
+body.theme-dark {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+body.theme-dark .editor {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+body.theme-dark .preview {
+  color: #d4d4d4;
+}
+
+body.theme-dark .preview code,
+body.theme-dark .preview pre {
+  background: #2d2d2d;
+}
+
+body.theme-dark .preview blockquote {
+  border-left-color: #555;
+  color: #999;
+}
+
+body.theme-dark .preview th {
+  background: #2d2d2d;
+}
+
+body.theme-dark .preview td,
+body.theme-dark .preview th {
+  border-color: #444;
+}
+
+body.theme-dark .editor-pane {
+  border-right-color: #444;
+}
+
+body.theme-dark .preview-toggle {
+  background: #2d2d2d;
+  color: #999;
+  border-left-color: #444;
+  border-right-color: #444;
+}
+
+body.theme-dark .preview-toggle:hover {
+  background: #3d3d3d;
+  color: #d4d4d4;
+}
+
+body.theme-dark .preview-toggle:active {
+  background: #4d4d4d;
+}
+
+body.theme-dark .modal-content {
+  background: #2d2d2d;
+  color: #e0e0e0;
+}
+
+body.theme-dark .modal-content h2 {
+  color: #e0e0e0;
+}
+
+body.theme-dark .theme-btn {
+  background: #3d3d3d;
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+body.theme-dark .theme-btn:hover {
+  border-color: #888;
+}
+
+body.theme-dark .theme-btn.active {
+  border-color: #6ab0f3;
+  box-shadow: 0 0 0 1px #6ab0f3;
+}
+
+body.theme-dark .theme-label {
+  color: #e0e0e0;
+}
+
+body.theme-dark .modal-close-btn {
+  background: #6ab0f3;
+  color: #1e1e1e;
+}
+
+body.theme-dark .modal-close-btn:hover {
+  background: #4a90d9;
+}

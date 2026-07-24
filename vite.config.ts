@@ -26,6 +26,7 @@ export default defineConfig({
         vite: {
           build: {
             outDir: "dist-electron",
+            emptyOutDir: false, // Don't wipe preload.js
           },
         },
       },

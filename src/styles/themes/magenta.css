@@ -1,0 +1,93 @@
+/* ===================================
+   Theme: Magenta
+   =================================== */
+
+body.theme-magenta {
+  background: #1a0a1a;
+  color: #f0e0f0;
+}
+
+body.theme-magenta .editor {
+  background: #1a0a1a;
+  color: #f0e0f0;
+}
+
+body.theme-magenta .preview {
+  color: #f0e0f0;
+}
+
+body.theme-magenta .preview code,
+body.theme-magenta .preview pre {
+  background: #2a1030;
+}
+
+body.theme-magenta .preview blockquote {
+  border-left-color: #c71585;
+  color: #d0a0c0;
+}
+
+body.theme-magenta .preview th {
+  background: #2a1030;
+}
+
+body.theme-magenta .preview td,
+body.theme-magenta .preview th {
+  border-color: #5a2060;
+}
+
+body.theme-magenta .editor-pane {
+  border-right-color: #5a2060;
+}
+
+body.theme-magenta .preview-toggle {
+  background: #2a1030;
+  color: #d0a0c0;
+  border-left-color: #5a2060;
+  border-right-color: #5a2060;
+}
+
+body.theme-magenta .preview-toggle:hover {
+  background: #3a1840;
+  color: #f0e0f0;
+}
+
+body.theme-magenta .preview-toggle:active {
+  background: #4a2050;
+}
+
+body.theme-magenta .modal-content {
+  background: #1a0a1a;
+  color: #f0e0f0;
+}
+
+body.theme-magenta .modal-content h2 {
+  color: #f0e0f0;
+}
+
+body.theme-magenta .theme-btn {
+  background: #2a1030;
+  border-color: #5a2060;
+  color: #f0e0f0;
+}
+
+body.theme-magenta .theme-btn:hover {
+  border-color: #c71585;
+}
+
+body.theme-magenta .theme-btn.active {
+  border-color: #c71585;
+  box-shadow: 0 0 0 1px #c71585;
+}
+
+body.theme-magenta .theme-label {
+  color: #f0e0f0;
+}
+
+body.theme-magenta .modal-close-btn {
+  background: #c71585;
+  color: #fff;
+}
+
+body.theme-magenta .modal-close-btn:hover {
+  background: #a01060;
+}
