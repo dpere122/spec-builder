@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- CSP: restrict to self and inline styles only; no unsafe-eval or unsafe-inline scripts -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"
+    />
+    <title>Spec Builder</title>
+    <script type="module" crossorigin src="/assets/index-Clg3X8_O.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BFMKlXWG.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="pane editor-pane">
+        <textarea
+          id="editor"
+          class="editor"
+          placeholder="Write your Markdown spec here..."
+        ></textarea>
+      </div>
+      <button
+        id="preview-toggle"
+        class="preview-toggle collapsed"
+        title="Toggle preview pane"
+        aria-label="Toggle preview pane"
+      >
+        ▶
+      </button>
+      <div class="pane preview-pane collapsed">
+        <div id="preview" class="preview"></div>
+      </div>
+    </div>
+    <!-- Theme picker modal dialog -->
+    <div id="theme-modal" class="modal-overlay" style="display: none">
+      <div class="modal-content">
+        <h2>Choose a Theme</h2>
+        <div class="theme-grid">
+          <button class="theme-btn" data-theme="light" title="Light theme">
+            <div class="theme-swatch light-swatch"></div>
+            <span>Light</span>
+          </button>
+          <button class="theme-btn" data-theme="dark" title="Dark theme">
+            <div class="theme-swatch dark-swatch"></div>
+            <span>Dark</span>
+          </button>
+          <button class="theme-btn" data-theme="sepia" title="Sepia theme">
+            <div class="theme-swatch sepia-swatch"></div>
+            <span>Sepia</span>
+          </button>
+          <button
+            class="theme-btn"
+            data-theme="high-contrast"
+            title="High Contrast theme"
+          >
+            <div class="theme-swatch high-contrast-swatch"></div>
+            <span>High Contrast</span>
+          </button>
+          <button class="theme-btn" data-theme="magenta" title="Magenta theme">
+            <div class="theme-swatch magenta-swatch"></div>
+            <span>Magenta</span>
+          </button>
+          <button
+            class="theme-btn"
+            data-theme="blue-ocean"
+            title="Blue Ocean theme"
+          >
+            <div class="theme-swatch blue-ocean-swatch"></div>
+            <span>Blue Ocean</span>
+          </button>
+          <button class="theme-btn" data-theme="orange" title="Orange theme">
+            <div class="theme-swatch orange-swatch"></div>
+            <span>Orange</span>
+          </button>
+          <button class="theme-btn" data-theme="pink" title="Pink theme">
+            <div class="theme-swatch pink-swatch"></div>
+            <span>Pink</span>
+          </button>
+        </div>
+        <button id="theme-close-btn" class="modal-close-btn">Close</button>
+      </div>
+    </div>
+    <!-- Custom context menu -->
+    <div id="context-menu"></div>
+  </body>
+</html>

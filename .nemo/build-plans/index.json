@@ -1,0 +1,29 @@
+[
+  {
+    "id": "plan-4dc76b97b7c9",
+    "relativePath": ".nemo/build-plans/plan-4dc76b97b7c9.md",
+    "sessionId": "312c3120-8263-47a0-b8f4-e05c1e0905ac",
+    "conversationTitle": "",
+    "createdAt": "2026-07-23T21:08:56.231967+00:00",
+    "status": "complete",
+    "title": "Right-click context menu with Cut / Copy / Paste / Select All"
+  },
+  {
+    "id": "plan-9aeeb267db1a",
+    "relativePath": ".nemo/build-plans/plan-9aeeb267db1a.md",
+    "sessionId": "41a1bfdd-efa9-418c-a206-a08e90bab09c",
+    "conversationTitle": "",
+    "createdAt": "2026-07-24T18:07:49.769629+00:00",
+    "status": "complete",
+    "title": "Add Orange Theme"
+  },
+  {
+    "id": "plan-c022b30ca55c",
+    "relativePath": ".nemo/build-plans/plan-c022b30ca55c.md",
+    "sessionId": "41a1bfdd-efa9-418c-a206-a08e90bab09c",
+    "conversationTitle": "",
+    "createdAt": "2026-07-24T18:19:32.140516+00:00",
+    "status": "complete",
+    "title": "Add Pink Theme"
+  }
+]

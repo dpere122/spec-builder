@@ -16,6 +16,8 @@ const THEMES: string[] = [
   "high-contrast",
   "magenta",
   "blue-ocean",
+  "orange",
+  "pink",
 ];
 
 /** The currently active theme name. Defaults to "light". */
