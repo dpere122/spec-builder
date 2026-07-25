@@ -37,6 +37,17 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
 
   /**
+   * Listen for the "Save Error" notification from the main process.
+   *
+   * @param callback - Function called with `{ filePath, error }` when save fails
+   */
+  onSaveError: (
+    callback: (data: { filePath: string; error: string }) => void,
+  ) => {
+    ipcRenderer.on("menu:save-error", (_event, data) => callback(data));
+  },
+
+  /**
    * Listen for confirmation that the save completed on the main process.
    *
    * @param callback - Function called with `{ filePath }` when the save finishes

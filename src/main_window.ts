@@ -78,6 +78,38 @@ export class MainWindow {
       fs.appendFileSync(this.logFile, `[${timestamp}] NAVIGATED: ${url}\n`);
     });
 
+    // Block navigation to external domains — only allow local/dev-server URLs
+    const allowedHosts = this.getAllowedHosts();
+    const blockExternalNavigation = (_event: Event, url: string) => {
+      try {
+        const parsed = new URL(url);
+        // Allow file://, localhost, and dev server hosts
+        if (parsed.protocol === "file:" || allowedHosts.has(parsed.hostname)) {
+          return; // allowed
+        }
+        _event.preventDefault();
+        const timestamp = this.logger.timestamp();
+        fs.appendFileSync(
+          this.logFile,
+          `[${timestamp}] BLOCKED NAVIGATION: ${url}\n`,
+        );
+      } catch {
+        _event.preventDefault();
+      }
+    };
+    window.webContents.on("will-navigate", blockExternalNavigation);
+    window.webContents.on("will-redirect", blockExternalNavigation);
+
+    // Block attempts to open links in a new window (e.g. target="_blank", window.open, Ctrl+click)
+    window.webContents.setWindowOpenHandler(({ url }) => {
+      const timestamp = this.logger.timestamp();
+      fs.appendFileSync(
+        this.logFile,
+        `[${timestamp}] BLOCKED NEW-WINDOW: ${url}\n`,
+      );
+      return { action: "deny" };
+    });
+
     // vite-plugin-electron injects VITE_DEV_SERVER_HOST and VITE_DEV_SERVER_PORT in development mode
     const devHost = process.env.VITE_DEV_SERVER_HOST || "127.0.0.1";
     const devPort = process.env.VITE_DEV_SERVER_PORT;
@@ -125,5 +157,23 @@ export class MainWindow {
     } catch (err) {
       console.error("Failed to load config on startup:", err);
     }
+  }
+
+  /**
+   * Returns a Set of hostnames that are allowed to navigate.
+   * Includes localhost, 127.0.0.1, ::1, and the Vite dev server host (if any).
+   */
+  private getAllowedHosts(): Set<string> {
+    const hosts = new Set<string>();
+    hosts.add("localhost");
+    hosts.add("127.0.0.1");
+    hosts.add("::1");
+
+    const devHost = process.env.VITE_DEV_SERVER_HOST;
+    if (devHost) {
+      hosts.add(devHost);
+    }
+
+    return hosts;
   }
 }

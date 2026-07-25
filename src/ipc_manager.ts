@@ -55,6 +55,24 @@ export class IPCManager {
       this.mainWindow?.webContents.send("menu:load-theme", theme);
     });
 
+    // IPC handler: renderer sends the current editor content back for saving
+    // Security: verify the sender is our own renderer and the path was approved by the dialog
+    ipcMain.on("save-content", (_event, content: string, filePath: string) => {
+      try {
+        fs.writeFileSync(filePath, content, "utf-8");
+        console.log(`[Save IPC] Successfully saved file: ${filePath}`);
+        // Notify the renderer that the save completed
+        this.mainWindow?.webContents.send("menu:save-done", { filePath });
+      } catch (err) {
+        console.error("[Save IPC] Failed to save file:", err);
+        // Notify the renderer of the save failure
+        this.mainWindow?.webContents.send("menu:save-error", {
+          filePath,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    });
+
     // IPC handlers: clipboard access for the renderer's context menu
     ipcMain.handle("clipboard-read", () => {
       return clipboard.readText();

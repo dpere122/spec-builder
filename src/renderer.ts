@@ -77,7 +77,6 @@ previewToggle.addEventListener("click", () => {
 });
 
 // --- Menu IPC handlers ---
-// --- Menu IPC handlers ---
 
 /**
  * Handle the "New" menu action: clear the editor and reset the preview.
@@ -122,6 +121,15 @@ window.electronAPI.onSaveDone((data: { filePath: string }) => {
   console.log(`Saved file: ${data.filePath}`);
 });
 
+/**
+ * Handle the "Save Error" notification from the main process.
+ *
+ * @param data - Object containing the file path and error message
+ */
+window.electronAPI.onSaveError((data: { filePath: string; error: string }) => {
+  console.error(`Failed to save file: ${data.filePath} - ${data.error}`);
+  alert(`Failed to save file:\n\n${data.error}`);
+});
 // --- Theme Modal Logic ---
 
 /**
