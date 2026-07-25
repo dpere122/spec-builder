@@ -1,23 +1,5 @@
 [
   {
-    "id": "plan-4dc76b97b7c9",
-    "relativePath": ".nemo/build-plans/plan-4dc76b97b7c9.md",
-    "sessionId": "312c3120-8263-47a0-b8f4-e05c1e0905ac",
-    "conversationTitle": "",
-    "createdAt": "2026-07-23T21:08:56.231967+00:00",
-    "status": "complete",
-    "title": "Right-click context menu with Cut / Copy / Paste / Select All"
-  },
-  {
-    "id": "plan-9aeeb267db1a",
-    "relativePath": ".nemo/build-plans/plan-9aeeb267db1a.md",
-    "sessionId": "41a1bfdd-efa9-418c-a206-a08e90bab09c",
-    "conversationTitle": "",
-    "createdAt": "2026-07-24T18:07:49.769629+00:00",
-    "status": "complete",
-    "title": "Add Orange Theme"
-  },
-  {
     "id": "plan-c022b30ca55c",
     "relativePath": ".nemo/build-plans/plan-c022b30ca55c.md",
     "sessionId": "41a1bfdd-efa9-418c-a206-a08e90bab09c",
@@ -25,5 +7,32 @@
     "createdAt": "2026-07-24T18:19:32.140516+00:00",
     "status": "complete",
     "title": "Add Pink Theme"
+  },
+  {
+    "id": "plan-68db1c9bbd60",
+    "relativePath": ".nemo/build-plans/plan-68db1c9bbd60.md",
+    "sessionId": "e249ca85-2a3b-4c43-8a90-0be8f5d81584",
+    "conversationTitle": "",
+    "createdAt": "2026-07-24T19:21:39.095482+00:00",
+    "status": "complete",
+    "title": "Refactor monolithic styles.css into per-theme files"
+  },
+  {
+    "id": "plan-02d262acee83",
+    "relativePath": ".nemo/build-plans/plan-02d262acee83.md",
+    "sessionId": "206cf11a-32ac-46b6-a2ed-6d832223e607",
+    "conversationTitle": "",
+    "createdAt": "2026-07-24T19:38:58.503769+00:00",
+    "status": "complete",
+    "title": "Refactor Electron main process into class-based architecture"
+  },
+  {
+    "id": "plan-17c63af9f26d",
+    "relativePath": ".nemo/build-plans/plan-17c63af9f26d.md",
+    "sessionId": "206cf11a-32ac-46b6-a2ed-6d832223e607",
+    "conversationTitle": "",
+    "createdAt": "2026-07-24T19:51:07.760658+00:00",
+    "status": "complete",
+    "title": "Restore File Menu by Rebuilding Missing Preload Script"
   }
 ]

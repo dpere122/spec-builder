@@ -175,6 +175,25 @@
         <button id="theme-close-btn" class="modal-close-btn">Close</button>
       </div>
     </div>
+    <!-- Find & Replace bar -->
+    <div id="find-replace-bar" class="find-replace-bar" style="display: none">
+      <div class="find-replace-row">
+        <input type="text" id="find-input" placeholder="Find..." />
+        <span id="find-count" class="find-count"></span>
+        <button id="find-prev" title="Previous">↑</button>
+        <button id="find-next" title="Next">↓</button>
+        <label class="case-toggle">
+          <input type="checkbox" id="find-case-sensitive" />Aa
+        </label>
+        <button id="find-close" title="Close">✕</button>
+      </div>
+      <div class="find-replace-row">
+        <input type="text" id="replace-input" placeholder="Replace..." />
+        <button id="replace-btn">Replace</button>
+        <button id="replace-all-btn">All</button>
+      </div>
+    </div>
+
     <!-- Custom context menu -->
     <div id="context-menu"></div>
     <script type="module" src="/src/renderer.ts"></script>

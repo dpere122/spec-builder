@@ -7,6 +7,9 @@
 /* Context menu (shared + per-theme overrides) */
 @import url("./styles/context-menu.css");
 
+/* Find & Replace bar */
+@import url("./styles/find-replace.css");
+
 /* Per-theme styles */
 @import url("./styles/themes/dark.css");
 @import url("./styles/themes/sepia.css");

@@ -1,0 +1,79 @@
+/* Find & Replace bar */
+
+.find-replace-bar {
+  position: fixed;
+  top: 0;
+  right: 40px;
+  z-index: 1000;
+  background: var(--bg-secondary, #2d2d2d);
+  border: 1px solid var(--border-color, #555);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+}
+
+.find-replace-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.find-replace-row:last-child {
+  margin-bottom: 0;
+}
+
+.find-replace-bar input[type="text"] {
+  padding: 4px 8px;
+  border: 1px solid var(--border-color, #555);
+  border-radius: 4px;
+  background: var(--bg-primary, #1e1e1e);
+  color: var(--text-primary, #e0e0e0);
+  font-size: 13px;
+  min-width: 180px;
+  outline: none;
+}
+
+.find-replace-bar input[type="text"]:focus {
+  border-color: var(--accent-color, #4a9eff);
+}
+
+.find-replace-bar button {
+  padding: 4px 10px;
+  border: 1px solid var(--border-color, #555);
+  border-radius: 4px;
+  background: var(--bg-tertiary, #3d3d3d);
+  color: var(--text-primary, #e0e0e0);
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.find-replace-bar button:hover {
+  background: var(--accent-color, #4a9eff);
+}
+
+.find-count {
+  min-width: 50px;
+  color: var(--text-secondary, #999);
+  font-size: 12px;
+  text-align: center;
+}
+
+.case-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--text-secondary, #999);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.case-toggle input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}

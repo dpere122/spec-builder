@@ -420,4 +420,236 @@ editor.addEventListener("contextmenu", (e) => {
 preview.addEventListener("contextmenu", (e) => {
   e.preventDefault();
   renderContextMenu("preview", e.clientX, e.clientY);
+}); // end preview context menu
+// --- Find & Replace ---
+
+const findReplaceBar = document.getElementById(
+  "find-replace-bar",
+) as HTMLDivElement | null;
+const findInput = document.getElementById(
+  "find-input",
+) as HTMLInputElement | null;
+const replaceInput = document.getElementById(
+  "replace-input",
+) as HTMLInputElement | null;
+const findCount = document.getElementById(
+  "find-count",
+) as HTMLSpanElement | null;
+const findCaseSensitive = document.getElementById(
+  "find-case-sensitive",
+) as HTMLInputElement | null;
+
+let currentMatchIndex = -1; // index of currently highlighted match
+let allMatches: Array<{ start: number; end: number }> = [];
+
+/**
+ * Escape special regex characters in a literal string.
+ */
+function escapeRegex(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Search the editor content for all occurrences of the find query.
+ * Returns an array of { start, end } ranges.
+ */
+function findMatches(query: string): Array<{ start: number; end: number }> {
+  if (!query) return [];
+
+  const text = editor.value;
+  const flags = findCaseSensitive?.checked ? "g" : "gi";
+  const regex = new RegExp(escapeRegex(query), flags);
+
+  const matches: Array<{ start: number; end: number }> = [];
+  let match: RegExpExecArray | null;
+
+  // Reset lastIndex for global regex
+  regex.lastIndex = 0;
+  while ((match = regex.exec(text)) !== null) {
+    matches.push({ start: match.index, end: match.index + match[0].length });
+    // Prevent zero-length match infinite loops
+    if (match[0].length === 0) regex.lastIndex++;
+  }
+
+  return matches;
+}
+
+/**
+ * Highlight the current match in the editor by selecting it.
+ */
+function highlightMatch(index: number): void {
+  if (allMatches.length === 0 || index < 0 || index >= allMatches.length) {
+    currentMatchIndex = -1;
+    return;
+  }
+
+  currentMatchIndex = index;
+  const match = allMatches[index];
+
+  // Set cursor/selection to the match
+  editor.setSelectionRange(match.start, match.end);
+  editor.focus();
+
+  // Scroll editor to show the match
+  const textBefore = editor.value.substring(0, match.start);
+  const newlineCount = (textBefore.match(/\n/g) || []).length;
+  editor.scrollTop = Math.max(0, (newlineCount - 5) * 20); // rough estimate
+
+  // Update count display
+  if (findCount) {
+    findCount.textContent = `${index + 1}/${allMatches.length}`;
+  }
+}
+
+/**
+ * Perform a search and navigate to the given direction.
+ */
+function navigateFind(direction: "next" | "prev"): void {
+  const query = findInput?.value;
+  if (!query) return;
+
+  allMatches = findMatches(query);
+
+  if (allMatches.length === 0) {
+    currentMatchIndex = -1;
+    if (findCount) findCount.textContent = "0 results";
+    return;
+  }
+
+  if (currentMatchIndex === -1) {
+    currentMatchIndex = direction === "next" ? 0 : allMatches.length - 1;
+  } else {
+    currentMatchIndex =
+      direction === "next"
+        ? (currentMatchIndex + 1) % allMatches.length
+        : (currentMatchIndex - 1 + allMatches.length) % allMatches.length;
+  }
+
+  highlightMatch(currentMatchIndex);
+}
+
+/**
+ * Replace the current match with the replacement text.
+ */
+function replaceCurrent(): void {
+  if (currentMatchIndex === -1 || allMatches.length === 0) return;
+
+  const match = allMatches[currentMatchIndex];
+  const replacement = replaceInput?.value ?? "";
+
+  // Replace in editor text
+  const before = editor.value.substring(0, match.start);
+  const after = editor.value.substring(match.end);
+  editor.value = before + replacement + after;
+
+  // Re-search and jump to next match
+  navigateFind("next");
+  updatePreview();
+}
+
+/**
+ * Replace all matches at once.
+ */
+function replaceAll(): void {
+  const query = findInput?.value;
+  if (!query || allMatches.length === 0) return;
+
+  const replacement = replaceInput?.value ?? "";
+  const flags = findCaseSensitive?.checked ? "g" : "gi";
+  const regex = new RegExp(escapeRegex(query), flags);
+
+  editor.value = editor.value.replace(regex, replacement);
+  allMatches = [];
+  currentMatchIndex = -1;
+  if (findCount) findCount.textContent = "";
+
+  updatePreview();
+}
+
+/**
+ * Open the Find & Replace bar.
+ */
+function openFindReplace(): void {
+  if (!findReplaceBar || !findInput) return;
+
+  findReplaceBar.style.display = "block";
+  findInput.value = "";
+  if (replaceInput) replaceInput.value = "";
+  if (findCount) findCount.textContent = "";
+  allMatches = [];
+  currentMatchIndex = -1;
+
+  // Pre-fill find box with selected text
+  const sel = editor.value.substring(
+    editor.selectionStart ?? 0,
+    editor.selectionEnd ?? 0,
+  );
+  if (sel && !sel.includes("\n")) {
+    findInput.value = sel;
+    navigateFind("next");
+  }
+
+  findInput.focus();
+}
+
+/**
+ * Close the Find & Replace bar.
+ */
+function closeFindReplace(): void {
+  if (!findReplaceBar) return;
+
+  findReplaceBar.style.display = "none";
+  allMatches = [];
+  currentMatchIndex = -1;
+  editor.focus();
+}
+
+// Wire up Find & Replace controls
+document
+  .getElementById("find-close")
+  ?.addEventListener("click", closeFindReplace);
+document
+  .getElementById("find-prev")
+  ?.addEventListener("click", () => navigateFind("prev"));
+document
+  .getElementById("find-next")
+  ?.addEventListener("click", () => navigateFind("next"));
+document
+  .getElementById("replace-btn")
+  ?.addEventListener("click", replaceCurrent);
+document
+  .getElementById("replace-all-btn")
+  ?.addEventListener("click", replaceAll);
+
+// Live search as the user types in the find box
+findInput?.addEventListener("input", () => {
+  currentMatchIndex = -1;
+  if (findInput?.value) navigateFind("next");
+  else {
+    allMatches = [];
+    if (findCount) findCount.textContent = "";
+  }
+});
+
+// Keyboard shortcut: Ctrl+F to open Find & Replace
+editor.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "f") {
+    e.preventDefault();
+    openFindReplace();
+  }
+});
+
+// Enter in replace box triggers replace
+replaceInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    replaceCurrent();
+  }
+});
+
+// Enter in find box navigates to next match
+findInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    navigateFind(e.shiftKey ? "prev" : "next");
+  }
+  if (e.key === "Escape") closeFindReplace();
 });

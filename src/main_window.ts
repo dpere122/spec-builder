@@ -33,8 +33,8 @@ export class MainWindow {
   private createWindow(): BrowserWindow {
     // Create the main browser window with security-hardened web preferences
     const window = new BrowserWindow({
-      width: 1200,
-      height: 800,
+      width: 1920,
+      height: 1080,
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         contextIsolation: true,
