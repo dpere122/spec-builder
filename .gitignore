@@ -24,5 +24,8 @@ coverage/
 # Build artifacts
 *.log
 
+# Packaging output
+release/
+
 # Test files
 test.md
