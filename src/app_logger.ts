@@ -1,3 +1,4 @@
+import { app } from "electron";
 import * as path from "path";
 import * as fs from "fs";
 
@@ -105,6 +106,11 @@ export class AppLogger {
   }
 
   private resolveLogsDir(): string {
+    // Use Electron's user data directory for logs (writable in production)
+    if (app.isPackaged) {
+      return path.join(app.getPath("userData"), "logs");
+    }
+    // In dev mode, use workspace-relative logs directory
     return path.join(__dirname, "..", "logs");
   }
 }

@@ -133,8 +133,8 @@ export class MainWindow {
       // Load from Vite dev server in development mode
       window.loadURL(devServerUrl);
     } else {
-      // Load built HTML file in production mode
-      window.loadFile(path.join(__dirname, "..", "index.html"));
+      // Load built HTML file in production mode (renderer is built to dist/)
+      window.loadFile(path.join(__dirname, "..", "dist", "index.html"));
     }
 
     // Load persisted theme if it exists (after load to ensure renderer is ready)

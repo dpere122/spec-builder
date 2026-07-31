@@ -9,6 +9,8 @@ import electron from "vite-plugin-electron";
  * - Renderer process: Served via Vite dev server with HMR (index.html is the entry)
  */
 export default defineConfig({
+  // Use relative base path for file:// protocol in production builds
+  base: "./",
   // Build renderer assets to dist/ for production
   build: {
     outDir: "dist",

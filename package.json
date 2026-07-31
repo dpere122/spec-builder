@@ -6,14 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "electron ."
+    "start": "electron .",
+    "package": "electron-builder",
+    "package:linux": "electron-builder --linux",
+    "package:win": "electron-builder --win",
+    "package:mac": "electron-builder --mac"
   },
   "keywords": [],
-  "author": "Daniel",
+  "author": {
+    "name": "Daniel",
+    "email": "daniel@example.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.19.19",
     "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
     "typescript": "^5.9.3",
     "vite": "^7.0.0",
     "vite-plugin-electron": "^0.3.0"
@@ -22,5 +30,31 @@
     "@types/dompurify": "^3.0.5",
     "dompurify": "^3.4.5",
     "marked": "^15.0.0"
+  },
+  "build": {
+    "appId": "com.daniel.spec-builder",
+    "productName": "Spec Builder",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/**/*",
+      "node_modules/**/*"
+    ],
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility",
+      "maintainer": "Daniel <daniel@example.com>"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    }
   }
 }
