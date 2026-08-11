@@ -11,23 +11,30 @@
   </head>
   <body>
     <div class="container">
-      <div class="pane editor-pane">
-        <textarea
-          id="editor"
-          class="editor"
-          placeholder="Write your Markdown spec here..."
-        ></textarea>
-      </div>
-      <button
-        id="preview-toggle"
-        class="preview-toggle"
-        title="Toggle preview pane"
-        aria-label="Toggle preview pane"
-      >
-        ▶
-      </button>
-      <div class="pane preview-pane">
-        <div id="preview" class="preview"></div>
+      <!-- Tab Bar Navigation -->
+      <nav id="tab-bar" class="tab-bar">
+        <!-- Tabs will be injected here by renderer.ts -->
+      </nav>
+
+      <div class="panes-row">
+        <div class="pane editor-pane">
+          <textarea
+            id="editor"
+            class="editor"
+            placeholder="Write your Markdown spec here..."
+          ></textarea>
+        </div>
+        <button
+          id="preview-toggle"
+          class="preview-toggle"
+          title="Toggle preview pane"
+          aria-label="Toggle preview pane"
+        >
+          ▶
+        </button>
+        <div class="pane preview-pane">
+          <div id="preview" class="preview"></div>
+        </div>
       </div>
     </div>
     <!-- Theme picker modal dialog -->

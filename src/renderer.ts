@@ -56,7 +56,17 @@ async function updatePreview(): Promise<void> {
 }
 
 // Listen for input events on the editor to trigger live preview updates
-editor.addEventListener("input", updatePreview);
+editor.addEventListener("input", () => {
+  // Sync current editor content back to the active tab and mark as dirty
+  if (activeTabId) {
+    const activeTab = tabs.find((t) => t.id === activeTabId);
+    if (activeTab) {
+      activeTab.content = editor.value;
+      activeTab.dirty = true;
+    }
+  }
+  updatePreview();
+});
 
 // Render the preview on initial page load
 updatePreview();
@@ -79,9 +89,242 @@ previewToggle.addEventListener("click", () => {
 // --- Menu IPC handlers ---
 
 /**
- * Handle the "New" menu action: clear the editor and reset the preview.
- * Shows a confirmation dialog if there is existing content in the editor.
+ * State management for the tab system.
  */
+let tabs: Array<{
+  id: string;
+  title: string;
+  contentId: string;
+  content: string;
+  dirty: boolean;
+  error: boolean; // true if file could not be loaded on startup
+}> = [];
+let activeTabId: string | null = null;
+
+/** Counter for generating unique untitled tab IDs. */
+let untitledCounter = 0;
+
+/** Regex to detect untitled tab sentinel contentIds. */
+const UNTITLED_ID_RE = /^:untitled-\d+:$/;
+
+/**
+ * Creates a new untitled tab with a sentinel contentId like ':untitled-N:'.
+ * The tab is empty, not dirty, and immediately selected.
+ */
+function createUntitledTab(): void {
+  // If there are no tabs (we're replacing the last untitled tab),
+  // reuse the current counter so the name doesn't increment.
+  if (tabs.length === 0) {
+    untitledCounter = Math.max(untitledCounter, 1);
+  } else {
+    untitledCounter += 1;
+  }
+
+  const id = `untitled-${untitledCounter}`;
+  const title = `Untitled-${untitledCounter}`;
+  const contentId = `:untitled-${untitledCounter}:`;
+
+  tabs.push({
+    id,
+    title,
+    contentId,
+    content: "",
+    dirty: false,
+    error: false,
+  });
+
+  switchTab(id);
+}
+
+/**
+ * Renders the tab bar UI.
+ *
+ * Clears the current tab bar content and builds new buttons based on the `tabs` array.
+ * Also applies the 'active' class to the current tab.
+ *
+ * @returns void
+ */
+function renderTabs(): void {
+  const tabBar = document.getElementById("tab-bar");
+  if (!tabBar) return;
+
+  tabBar.innerHTML = "";
+  tabs.forEach((tab) => {
+    const btn = document.createElement("button");
+    btn.className = "tab-button";
+    btn.id = `tab-btn-${tab.id}`;
+
+    // Show error icon and red color for missing files
+    if (tab.error) {
+      btn.textContent = `⚠ ${tab.title}`;
+      btn.classList.add("tab-error");
+      btn.onclick = () => {
+        // Can't open a missing file — just notify the user
+        window.alert(`File not found:\n${tab.contentId}`);
+      };
+    } else {
+      btn.textContent = tab.title;
+      btn.onclick = () => switchTab(tab.id);
+    }
+
+    btn.oncontextmenu = (e) => showTabContextMenu(e, tab.id);
+    tabBar.appendChild(btn);
+  });
+
+  if (activeTabId) {
+    const activeBtn = document.getElementById(`tab-btn-${activeTabId}`);
+    if (activeBtn) activeBtn.classList.add("active");
+  }
+}
+
+/**
+ * Shows a context menu for a tab with a "Close" option.
+ * If the tab has unsaved changes, prompts the user to confirm closing.
+ *
+ * @param e - The context menu event.
+ * @param tabId - The ID of the tab being right-clicked.
+ */
+function showTabContextMenu(e: MouseEvent, tabId: string): void {
+  e.preventDefault();
+
+  const tab = tabs.find((t) => t.id === tabId);
+  if (!tab) return;
+
+  const hasUnsavedChanges = tab.dirty;
+
+  if (contextMenu) {
+    contextMenu.innerHTML = "";
+
+    const closeItem = document.createElement("div");
+    closeItem.className = "context-menu-item";
+    closeItem.textContent = "Close";
+
+    closeItem.onclick = () => {
+      hideContextMenu();
+
+      if (hasUnsavedChanges) {
+        // Defer confirm slightly to avoid Linux GLib signal handler race
+        // when closing context menu and showing dialog in quick succession.
+        setTimeout(() => {
+          const confirmed = window.confirm(
+            `"${tab.title}" has unsaved changes. Close anyway?`,
+          );
+          if (confirmed) {
+            closeTab(tabId);
+          }
+        }, 50);
+      } else {
+        closeTab(tabId);
+      }
+    };
+
+    contextMenu.appendChild(closeItem);
+    showContextMenu(e.clientX, e.clientY);
+  }
+}
+
+/**
+ * Closes a tab by ID.
+ * If the closed tab was active, switches to another available tab.
+ *
+ * @param tabId - The ID of the tab to close.
+ */
+function closeTab(tabId: string): void {
+  const tabIndex = tabs.findIndex((t) => t.id === tabId);
+  if (tabIndex === -1) return;
+
+  tabs.splice(tabIndex, 1);
+
+  if (activeTabId === tabId) {
+    if (tabs.length === 0) {
+      // Never allow zero tabs: silently create a new untitled tab (VS Code style)
+      // createUntitledTab already renders and switches, so don't double-render here.
+      createUntitledTab();
+      // Persist the updated list (closed file removed, untitled not saved)
+      scheduleSessionSave();
+      return;
+    } else {
+      // Switch to the previous tab, or the first one if closing the first tab
+      const newActiveIndex = Math.max(0, tabIndex - 1);
+      switchTab(tabs[newActiveIndex].id);
+    }
+  }
+
+  renderTabs();
+
+  // Schedule saving the updated session
+  scheduleSessionSave();
+}
+
+/**
+ * Switches the active tab and updates the editor/preview content.
+ *
+ * @param tabId - The ID of the tab to switch to.
+ * @returns void
+ */
+function switchTab(tabId: string): void {
+  activeTabId = tabId;
+
+  // Update UI
+  renderTabs();
+
+  // Find tab data
+  const tab = tabs.find((t) => t.id === tabId);
+  if (tab) {
+    // Restore this tab's content into the editor and preview
+    editor.value = tab.content;
+    updatePreview();
+  }
+}
+
+/**
+ * Adds a new tab to the system.
+ *
+ * @param id - Unique identifier for the tab.
+ * @param title - The display title of the tab.
+ * @param contentId - Reference to the content ID.
+ * @param content - The file content for this tab.
+ * @returns void
+ */
+function addTab(
+  id: string,
+  title: string,
+  contentId: string,
+  content: string = "",
+): void {
+  // If a tab with this ID exists, update it; otherwise, push a new one.
+  const existingIndex = tabs.findIndex((t) => t.id === id);
+  if (existingIndex !== -1) {
+    tabs[existingIndex] = {
+      id,
+      title,
+      contentId,
+      content,
+      dirty: false,
+      error: false,
+    };
+  } else {
+    tabs.push({
+      id,
+      title,
+      contentId,
+      content,
+      dirty: false,
+      error: false,
+    });
+  }
+
+  renderTabs();
+
+  // Auto-switch to the newly added/updated tab
+  switchTab(id);
+
+  // Schedule saving the updated session
+  scheduleSessionSave();
+}
+
+// --- Update existing IPC handlers ---
+
 window.electronAPI.onNew(() => {
   if (editor.value.trim().length > 0) {
     const confirmed = confirm(
@@ -91,46 +334,141 @@ window.electronAPI.onNew(() => {
   }
   editor.value = "";
   preview.innerHTML = "";
+
+  // Clear tabs or handle new file appropriately
+  tabs = [];
+  activeTabId = null;
+  renderTabs();
 });
 
-/**
- * Handle the "Open" menu action: load file content into the editor and update the preview.
- *
- * @param data - Object containing filePath and content from the main process
- */
 window.electronAPI.onOpen((data: { filePath: string; content: string }) => {
+  const tabId = `tab-${data.filePath.split("/").pop()}`; // Simple unique ID from filename
+  const title = data.filePath.split("/").pop() || "Untitled";
+
+  addTab(tabId, title, data.filePath, data.content);
+
   editor.value = data.content;
   updatePreview();
 });
 
-/**
- * Handle the "Save" prompt: send the current editor content to the main process for saving.
- *
- * @param filePath - Target file path from the save dialog
- */
-window.electronAPI.onSavePrompt((filePath: string) => {
+// Save: main process sends filePath; renderer sends content back.
+// For untitled tabs, we request a Save-As dialog instead.
+window.electronAPI.onSavePrompt((filePath: string | null) => {
+  const activeTab = tabs.find((t) => t.id === activeTabId);
+  if (!activeTab) return;
+
+  // If no path given, request Save-As
+  if (!filePath) {
+    window.electronAPI.saveAsRequest();
+    return;
+  }
+
+  // A path was provided (either existing tab or from Save-As).
+  // If this is an untitled tab, promote it to the chosen path first.
+  if (UNTITLED_ID_RE.test(activeTab.contentId)) {
+    activeTab.contentId = filePath;
+    activeTab.title = filePath.split("/").pop() || "Untitled";
+    renderTabs();
+  }
+
   window.electronAPI.saveContent(editor.value, filePath);
 });
 
-/**
- * Handle the "Save Done" confirmation from the main process.
- *
- * @param data - Object containing the saved file path
- */
-window.electronAPI.onSaveDone((data: { filePath: string }) => {
-  console.log(`Saved file: ${data.filePath}`);
+// Success: main process confirms save.
+window.electronAPI.onSaveDone(({ filePath }: { filePath: string }) => {
+  const activeTab = tabs.find((t) => t.id === activeTabId);
+  if (activeTab) {
+    // Sync tab content with what was saved and mark as clean
+    activeTab.content = editor.value;
+    activeTab.dirty = false;
+    // If the tab's contentId differs from the saved path, update it
+    if (activeTab.contentId !== filePath) {
+      activeTab.contentId = filePath;
+      activeTab.title = filePath.split("/").pop() || "Untitled";
+      renderTabs();
+    }
+  }
+  // Schedule saving the updated session after a file save
+  scheduleSessionSave();
 });
 
+// Error: main process reports a save failure.
+window.electronAPI.onSaveError(
+  ({ filePath, error }: { filePath: string; error: string }) => {
+    console.error(`Failed to save "${filePath}":`, error);
+  },
+);
+
 /**
- * Handle the "Save Error" notification from the main process.
- *
- * @param data - Object containing the file path and error message
+ * Saves the current list of open files to config via IPC.
+ * Untitled tabs are excluded from session persistence.
  */
-window.electronAPI.onSaveError((data: { filePath: string; error: string }) => {
-  console.error(`Failed to save file: ${data.filePath} - ${data.error}`);
-  alert(`Failed to save file:\n\n${data.error}`);
-});
-// --- Theme Modal Logic ---
+function saveSession(): void {
+  const persistentTabs = tabs.filter((t) => !UNTITLED_ID_RE.test(t.contentId));
+  window.electronAPI.saveSessionFiles(persistentTabs, activeTabId);
+}
+
+/**
+ * Loads the session from config on startup.
+ * For each saved file, tries to restore it; if not found, creates an error tab.
+ */
+async function loadSession(): Promise<void> {
+  const { files, activeTabId: savedActiveTabId } =
+    await window.electronAPI.loadSessionFiles();
+
+  if (!files || files.length === 0) {
+    // No saved files — create a single untitled tab on startup
+    createUntitledTab();
+    return;
+  }
+
+  for (const entry of files) {
+    const result = await window.electronAPI.openFileSilent(entry.contentId);
+    if (!result.success) {
+      // File not found or read error — create an error tab
+      console.warn(
+        `[Session] Could not load "${entry.contentId}":`,
+        result.error,
+      );
+      tabs.push({
+        id: entry.id,
+        title: entry.title,
+        contentId: entry.contentId,
+        content: "",
+        dirty: false,
+        error: true,
+      });
+    }
+    // If successful, onOpen handler will create/update the tab
+  }
+
+  renderTabs();
+
+  // Restore the previously active tab if it still exists
+  if (savedActiveTabId && tabs.some((t) => t.id === savedActiveTabId)) {
+    activeTabId = savedActiveTabId;
+    const activeTab = tabs.find((t) => t.id === savedActiveTabId);
+    if (activeTab && !activeTab.error) {
+      editor.value = activeTab.content;
+      updatePreview();
+    }
+    renderTabs();
+  } else if (tabs.length > 0) {
+    // Activate the first non-error tab
+    const firstValid = tabs.find((t) => !t.error);
+    if (firstValid) {
+      switchTab(firstValid.id);
+    }
+  }
+}
+
+// Save session whenever tabs change (add, close, save)
+let sessionSaveTimer: ReturnType<typeof setTimeout> | null = null;
+function scheduleSessionSave(): void {
+  // Debounce: save after 500ms of inactivity
+  if (sessionSaveTimer) clearTimeout(sessionSaveTimer);
+  sessionSaveTimer = setTimeout(saveSession, 500);
+}
 
 /**
  * Apply a theme by setting the corresponding CSS class on the body element.
@@ -661,3 +999,6 @@ findInput?.addEventListener("keydown", (e) => {
   }
   if (e.key === "Escape") closeFindReplace();
 });
+
+// Load the previous session's open files on startup
+loadSession();

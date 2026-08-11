@@ -18,3 +18,52 @@
 @import url("./styles/themes/blue-ocean.css");
 @import url("./styles/themes/orange.css");
 @import url("./styles/themes/pink.css");
+
+/* Tab Bar Styles */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--bg-secondary, #2a2a2a);
+  border-bottom: 1px solid var(--border-color, #444);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.tab-button {
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-main, #e0e0e0);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  background: var(--bg-hover, #3a3a3a);
+}
+
+.tab-button.active {
+  background: var(--bg-main, #1e1e1e);
+  border: 1px solid var(--accent-color, #4a9eff);
+  color: var(--accent-color, #4a9eff);
+  font-weight: bold;
+}
+
+.tab-button.tab-error {
+  color: #d32f2f;
+  background: #3e1a1a;
+  cursor: not-allowed;
+}
+
+.tab-button.tab-error:hover {
+  background: #4e2222;
+}
+
+.tab-button.tab-error.active {
+  background: #4e2222;
+  border-color: #d32f2f;
+  color: #d32f2f;
+}

@@ -73,6 +73,7 @@ export class App {
     if (this.mainWindow) {
       this.appMenu = new AppMenu(this.mainWindow.getWindow());
       this.appMenu.buildAndSetMenu();
+      this.appMenu.registerIPCHandlers();
     }
   }
 

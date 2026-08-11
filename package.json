@@ -10,7 +10,9 @@
     "package": "electron-builder",
     "package:linux": "electron-builder --linux",
     "package:win": "electron-builder --win",
-    "package:mac": "electron-builder --mac"
+    "package:mac": "electron-builder --mac",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "keywords": [],
   "author": {
@@ -20,11 +22,14 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.19.19",
+    "@vitest/coverage-v8": "^4.1.10",
     "electron": "^33.0.0",
     "electron-builder": "^25.1.8",
+    "jsdom": "^30.0.1",
     "typescript": "^5.9.3",
     "vite": "^7.0.0",
-    "vite-plugin-electron": "^0.3.0"
+    "vite-plugin-electron": "^0.3.0",
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "@types/dompurify": "^3.0.5",

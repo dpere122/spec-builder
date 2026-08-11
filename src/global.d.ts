@@ -17,12 +17,37 @@ declare global {
       ) => void;
       onSaveDone: (callback: (data: { filePath: string }) => void) => void;
       saveContent: (content: string, filePath: string) => void;
+      saveAsRequest: () => void;
       onThemes: (callback: () => void) => void;
       selectTheme: (theme: string) => void;
       onLoadTheme: (callback: (theme: string) => void) => void;
       readClipboard: () => Promise<string>;
       writeClipboard: (text: string) => Promise<void>;
       clearClipboard: () => Promise<void>;
+      saveSessionFiles: (
+        files: Array<{
+          id: string;
+          title: string;
+          contentId: string;
+          content: string;
+          dirty: boolean;
+        }>,
+        activeTabId: string | null,
+      ) => void;
+      loadSessionFiles: () => Promise<{
+        files: Array<{
+          id: string;
+          title: string;
+          contentId: string;
+          content: string;
+          dirty: boolean;
+        }>;
+        activeTabId: string | null;
+      }>;
+      openFileSilent: (filePath: string) => Promise<{
+        success: boolean;
+        error?: string;
+      }>;
     };
   }
 }

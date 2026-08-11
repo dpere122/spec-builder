@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, app, dialog } from "electron";
+import { BrowserWindow, Menu, app, dialog, ipcMain } from "electron";
 import * as fs from "fs";
 import type { MenuItemConstructorOptions } from "electron";
 
@@ -142,5 +142,33 @@ export class AppMenu {
         ],
       },
     ];
+  }
+
+  /**
+   * Register IPC handlers that belong to the menu (e.g., save-as-request).
+   */
+  registerIPCHandlers(): void {
+    ipcMain.handle(
+      "save-as-request",
+      async (_event): Promise<{ filePath: string | null }> => {
+        const result = await dialog.showSaveDialog(this.mainWindow!, {
+          filters: [
+            { name: "Markdown", extensions: ["md", "markdown"] },
+            { name: "All Files", extensions: ["*"] },
+          ],
+          defaultPath: "untitled.md",
+        });
+
+        if (!result.canceled && result.filePath) {
+          this.currentFilePath = result.filePath;
+          this.mainWindow?.webContents.send(
+            "menu:save-prompt",
+            result.filePath,
+          );
+        }
+
+        return { filePath: result.filePath || null };
+      },
+    );
   }
 }

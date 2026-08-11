@@ -67,6 +67,28 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
 
   /**
+   * Request a Save-As dialog from the main process (used for untitled tabs).
+   */
+  saveAsRequest: () => {
+    ipcRenderer.send("save-as-request");
+  },
+
+  /**
+   * Open a file silently by path (no dialog). Used for session restore.
+   *
+   * @param filePath - The file path to open
+   * @returns Promise resolving to `{ success, error? }`
+   */
+  openFileSilent: async (
+    filePath: string,
+  ): Promise<{
+    success: boolean;
+    error?: string;
+  }> => {
+    return ipcRenderer.invoke("open-file-silent", filePath);
+  },
+
+  /**
    * Listen for the "Themes" menu action — opens the theme picker modal.
    *
    * @param callback - Function called when the Themes menu item is clicked
@@ -116,5 +138,42 @@ contextBridge.exposeInMainWorld("electronAPI", {
    */
   clearClipboard: async (): Promise<void> => {
     return ipcRenderer.invoke("clipboard-clear");
+  },
+
+  /**
+   * Send the list of open files to the main process for persistence.
+   *
+   * @param files - Array of open file entries to save
+   * @param activeTabId - The currently active tab ID
+   */
+  saveSessionFiles: (
+    files: Array<{
+      id: string;
+      title: string;
+      contentId: string;
+      content: string;
+      dirty: boolean;
+    }>,
+    activeTabId: string | null,
+  ) => {
+    ipcRenderer.send("session-save-files", files, activeTabId);
+  },
+
+  /**
+   * Load the list of open files from the saved session.
+   *
+   * @returns Promise resolving to `{ files, activeTabId }`
+   */
+  loadSessionFiles: async (): Promise<{
+    files: Array<{
+      id: string;
+      title: string;
+      contentId: string;
+      content: string;
+      dirty: boolean;
+    }>;
+    activeTabId: string | null;
+  }> => {
+    return ipcRenderer.invoke("session-load-files");
   },
 });
