@@ -31,3 +31,5 @@ release/
 
 # Test files
 test.md
+
+.nemo/
